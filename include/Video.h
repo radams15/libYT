@@ -16,4 +16,6 @@ typedef struct {
 Video* video_new();
 void video_free(Video* video);
 
+const char* video_get_playable(Video* video, int quality);
+
 #endif //YOUTUBE_VIDEO_H
