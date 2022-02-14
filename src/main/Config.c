@@ -135,6 +135,14 @@ Videos* config_get_vids_list(Config *conf) {
     return vids;
 }
 
+Video* videos_get(Videos* vids, int index){
+    if(index >=0 && index < vids->length){
+        return vids->array[index];
+    }
+
+    return NULL;
+}
+
 void videos_free(Videos* vids) {
     for(int i=0 ; i<vids->length ; i++){
         video_free(vids->array[i]);
