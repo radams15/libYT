@@ -7,7 +7,7 @@
 
 #include "Video.h"
 
-typedef void (*channel_cb)(Video*, void*);
+typedef void (*vid_cb)(Video*, void*);
 
 typedef struct{
     char* id;
@@ -18,7 +18,7 @@ Channel* channel_new(const char* id);
 
 const char* channel_name(Channel* channel);
 
-int channel_get_vids(Channel* channel, channel_cb callback, void* data);
+int channel_get_vids(Channel* channel, vid_cb callback, void* data);
 
 void channel_free(Channel* channel);
 

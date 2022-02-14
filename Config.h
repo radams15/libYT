@@ -18,9 +18,19 @@ typedef struct {
     Subs* subs;
 } Config;
 
+typedef struct {
+    Video** array;
+    int length;
+} Videos;
+
 Config* config_new(const char* file);
 
 void config_subs_add(Config* conf, Channel* channel);
+
+Videos* config_get_vids_list(Config* conf);
+void videos_free(Videos* vids);
+
+int config_get_vids(Config* conf, vid_cb callback, void* data);
 
 void config_free(Config* conf);
 

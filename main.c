@@ -1,25 +1,27 @@
 #include <stdio.h>
-#include <string.h>
-#include "Channel.h"
 #include "Config.h"
-
-void got_vid(Video* vid, void* data){
-    if(strlen(vid->title) > 0) {
-        printf("Title: %s\n", vid->channel_name);
-        video_free(vid);
-    }
-}
 
 int main() {
     Config* conf = config_new("/home/rhys/.local/share/yt_saves.json");
 
-    Channel* c = channel_new("UClY9pvqTLAxmz3vD1r-PxUA");
+    Videos* vids = config_get_vids_list(conf);
 
-    config_subs_add(conf, c);
+    for(int i=0 ; i<vids->length ; i++){
+        printf("[%d]: Title: %s\n", i, vids->array[i]->title);
+    }
+
+    int choice;
+
+    printf("Choice: ");
+    scanf("%d", &choice);
+
+    if(choice > 0 && choice < vids->length) {
+        printf("Chose: %s\n", vids->array[choice]->title);
+    }
+
+    videos_free(vids);
 
     config_free(conf);
-
-    //channel_get_vids(c, &got_vid, "Test1");
 
     return 0;
 }

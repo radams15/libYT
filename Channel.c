@@ -58,7 +58,7 @@ void make_video(xmlNode* node, Video* vid, int level){
     }
 }
 
-int channel_get_vids(Channel *channel, channel_cb callback, void* data) {
+int channel_get_vids(Channel *channel, vid_cb callback, void* data) {
     const char* url_base = "https://www.youtube.com/feeds/videos.xml?channel_id=";
     char* url = calloc(strlen(url_base) + strlen(channel->id) + 1, sizeof(char));
     strcpy(url, url_base);
