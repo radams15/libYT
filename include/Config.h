@@ -7,33 +7,42 @@
 
 #include "Channel.h"
 
-typedef struct {
-    Channel** array;
-    int length;
-} Subs;
+#ifdef __cplusplus
+extern "C"{
+#endif
 
-typedef struct {
+struct Subs{
+    struct Channel** array;
+    int length;
+};
+
+struct Config{
     const char* file;
     int quality;
-    Subs* subs;
-} Config;
+    struct Subs* subs;
+    const char* invidious_inst;
+};
 
-typedef struct {
-    Video** array;
+struct Videos {
+    struct Video** array;
     int length;
-} Videos;
+};
 
-Config* config_new(const char* file);
+struct Config* config_new(const char* file);
 
-void config_subs_add(Config* conf, Channel* channel);
+void config_subs_add(struct Config* conf, struct Channel* channel);
 
-Videos* config_get_vids_list(Config* conf);
-void videos_free(Videos* vids);
+struct Videos* config_get_vids_list(struct Config* conf);
+void videos_free(struct Videos* vids);
 
-Video* videos_get(Videos* vids, int index);
+struct Video* videos_get(struct Videos* vids, int index);
 
-int config_get_vids(Config* conf, vid_cb callback, void* data);
+int config_get_vids(struct Config* conf, vid_cb callback, void* data);
 
-void config_free(Config* conf);
+void config_free(struct Config* conf);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif //YOUTUBE_CONFIG_H

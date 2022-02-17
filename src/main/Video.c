@@ -9,11 +9,13 @@
 #include <string.h>
 #include <stdio.h>
 
-#define API_URL "http://therhys.co.uk/yt.php?url="
+#include "Constants.h"
+
+#include "Config.h"
 
 #define FREE_NOTNULL(a) if(strlen(a) > 0){ free((void*) a); }
 
-void video_free(Video *video) {
+void video_free(struct Video *video) {
     FREE_NOTNULL(video->link)
     FREE_NOTNULL(video->title)
     FREE_NOTNULL(video->channel_name)
@@ -23,8 +25,8 @@ void video_free(Video *video) {
     free(video);
 }
 
-Video* video_new() {
-    Video* out = malloc(sizeof(Video));
+struct Video* video_new() {
+    struct Video* out = malloc(sizeof(Video));
 
     out->link = "";
     out->title = "";
@@ -35,12 +37,12 @@ Video* video_new() {
     return out;
 }
 
-const char* video_get_playable(Video* video, int quality) {
-    unsigned int len = strlen(API_URL) + strlen(video->link) + 32;
+const char* video_get_playable(struct Video* video, struct Config* conf) {
+    unsigned int len = strlen(BASE_URL) + strlen(video->link) + 32;
 
     char* url = malloc((len*sizeof(char))+5);
 
-    sprintf(url, API_URL "%s&quality=best[height<=%d]", video->link, quality);
+    sprintf(url, BASE_URL "stream.php?url=%s&quality=best[height<=%d]", video->link, conf->quality);
 
     const char* stream_url = net_get(url);
 

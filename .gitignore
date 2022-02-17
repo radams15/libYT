@@ -1,3 +1,4 @@
 # Project exclude paths
 /cmake-build-debug/
 /python/yt_saves.json
+/ruby/yt_saves.json

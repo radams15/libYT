@@ -7,19 +7,27 @@
 
 #include "Video.h"
 
-typedef void (*vid_cb)(Video*, void*);
+#ifdef __cplusplus
+extern "C"{
+#endif
 
-typedef struct{
+typedef void (*vid_cb)(struct Video*, void*);
+
+struct Channel{
     char* id;
     char* name;
-} Channel;
+};
 
-Channel* channel_new(const char* id);
+struct Channel* channel_new(const char* id);
 
-const char* channel_name(Channel* channel);
+const char* channel_name(struct Channel* channel);
 
-int channel_get_vids(Channel* channel, vid_cb callback, void* data);
+int channel_get_vids(struct Channel* channel, vid_cb callback, void* data);
 
-void channel_free(Channel* channel);
+void channel_free(struct Channel* channel);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif //YOUTUBE_CHANNEL_H

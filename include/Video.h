@@ -5,7 +5,13 @@
 #ifndef YOUTUBE_VIDEO_H
 #define YOUTUBE_VIDEO_H
 
-typedef struct {
+#ifdef __cplusplus
+extern "C"{
+#endif
+
+struct Config;
+
+struct Video {
     char* link;
     char* title;
     char* channel_name;
@@ -13,9 +19,13 @@ typedef struct {
     char* publish_date;
 } Video;
 
-Video* video_new();
-void video_free(Video* video);
+struct Video* video_new();
+void video_free(struct Video* video);
 
-const char* video_get_playable(Video* video, int quality);
+const char* video_get_playable(struct Video* video, struct Config* conf);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif //YOUTUBE_VIDEO_H

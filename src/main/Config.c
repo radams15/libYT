@@ -31,9 +31,9 @@ const char* read_file(const char* fname){
     return buffer;
 }
 
-void config_load(Config* conf){
+void config_load(struct Config* conf){
     const char* data = read_file(conf->file);
-
+	
     cJSON* json = cJSON_Parse(data);
 
     conf->quality = cJSON_GetObjectItem(json, "quality")->valueint;
@@ -43,7 +43,7 @@ void config_load(Config* conf){
     cJSON* sub;
     cJSON_ArrayForEach(sub, subs){
         if(cJSON_IsString(sub)) {
-            Channel* c = channel_new(sub->valuestring);
+            struct Channel* c = channel_new(sub->valuestring);
 
             config_subs_add(conf, c);
         }
@@ -52,7 +52,7 @@ void config_load(Config* conf){
     cJSON_Delete(json);
 }
 
-void config_save(Config* conf){
+void config_save(struct Config* conf){
     const char* data = read_file(conf->file);
 
     cJSON* json = cJSON_CreateObject();
@@ -74,12 +74,13 @@ void config_save(Config* conf){
     cJSON_Delete(json);
 }
 
-Config* config_new(const char* file) {
-    Config* out = malloc(sizeof(Config));
+struct Config* config_new(const char* file) {
+    struct Config* out = malloc(sizeof(struct Config));
 
     out->file = strdup(file);
+    out->invidious_inst = strdup("http://vid.puffyan.us"); //TODO load from file.
     out->quality = 480;
-    out->subs = malloc(sizeof(Subs));
+    out->subs = malloc(sizeof(struct Subs));
 
     out->subs->array = malloc(1);
     out->subs->length = 0;
@@ -89,7 +90,7 @@ Config* config_new(const char* file) {
     return out;
 }
 
-void config_free(Config *conf) {
+void config_free(struct Config *conf) {
     free((void*) conf->file);
     if(conf->subs->length > 0) {
         for(int i=0 ; i<conf->subs->length ; i++){
@@ -100,33 +101,35 @@ void config_free(Config *conf) {
     free(conf->subs);
 }
 
-void config_subs_add(Config* conf, Channel* channel) {
+void config_subs_add(struct Config* conf, struct Channel* channel) {
     conf->subs->length++;
 
-    conf->subs->array = realloc(conf->subs->array, conf->subs->length*sizeof(Channel*));
+    conf->subs->array = realloc(conf->subs->array, conf->subs->length*sizeof(struct Channel*));
 
     conf->subs->array[conf->subs->length-1] = channel;
 }
 
-int config_get_vids(Config *conf, vid_cb callback, void *data) {
+int config_get_vids(struct Config *conf, vid_cb callback, void *data) {
     for(int i=0 ; i<conf->subs->length ; i++){
         //TODO Threading
-        Channel* c = conf->subs->array[i];
+        struct Channel* c = conf->subs->array[i];
         channel_get_vids(c, callback, data);
     }
+
+    return EXIT_SUCCESS;
 }
 
-void config_vid_list_appender(Video* vid, void* ptr){
-    Videos* vids = ptr;
+void config_vid_list_appender(struct Video* vid, void* ptr){
+    struct Videos* vids = ptr;
 
     vids->length++;
-    vids->array = realloc(vids->array, vids->length*sizeof(Video*));
+    vids->array = realloc(vids->array, vids->length*sizeof(struct Video*));
 
     vids->array[vids->length-1] = vid;
 }
 
-Videos* config_get_vids_list(Config *conf) {
-    Videos* vids = malloc(sizeof(Videos));
+struct Videos* config_get_vids_list(struct Config *conf) {
+    struct Videos* vids = malloc(sizeof(struct Videos));
     vids->length = 0;
     vids->array = malloc(1);
 
@@ -135,7 +138,7 @@ Videos* config_get_vids_list(Config *conf) {
     return vids;
 }
 
-Video* videos_get(Videos* vids, int index){
+struct Video* videos_get(struct Videos* vids, int index){
     if(index >=0 && index < vids->length){
         return vids->array[index];
     }
@@ -143,7 +146,7 @@ Video* videos_get(Videos* vids, int index){
     return NULL;
 }
 
-void videos_free(Videos* vids) {
+void videos_free(struct Videos* vids) {
     for(int i=0 ; i<vids->length ; i++){
         video_free(vids->array[i]);
     }

@@ -9,13 +9,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "Constants.h"
+
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 
 #define STR_EQ(a, b) (!xmlStrcmp(a, (const xmlChar *) b))
 
-Channel* channel_new(const char* id) {
-    Channel* out = malloc(sizeof(Channel));
+struct Channel* channel_new(const char* id) {
+    struct Channel* out = malloc(sizeof(struct Channel));
 
     out->id = strdup(id);
     out->name = "";
@@ -23,7 +25,7 @@ Channel* channel_new(const char* id) {
     return out;
 }
 
-void channel_free(Channel* channel) {
+void channel_free(struct Channel* channel) {
     free(channel->id);
     if(strlen(channel->name) > 0){
         free(channel->name);
@@ -32,7 +34,7 @@ void channel_free(Channel* channel) {
     free(channel);
 }
 
-const char* channel_name(Channel* channel) {
+const char* channel_name(struct Channel* channel) {
     if(strlen(channel->name) == 0){
         const char* name = "TODO";
         channel->name = strdup("TODO");
@@ -42,7 +44,7 @@ const char* channel_name(Channel* channel) {
     return (const char*) channel->name;
 }
 
-void make_video(xmlNode* node, Video* vid, int level){
+void make_video(xmlNode* node, struct Video* vid, int level){
     for(xmlNode* i=node->children; i!=NULL; i=i->next){
         const xmlChar* key = i->name;
 
@@ -58,14 +60,14 @@ void make_video(xmlNode* node, Video* vid, int level){
     }
 }
 
-int channel_get_vids(Channel *channel, vid_cb callback, void* data) {
-    const char* url_base = "https://www.youtube.com/feeds/videos.xml?channel_id=";
+int channel_get_vids(struct Channel *channel, vid_cb callback, void* data) {
+    const char* url_base = BASE_URL "feed.php?id=";
     char* url = calloc(strlen(url_base) + strlen(channel->id) + 1, sizeof(char));
     strcpy(url, url_base);
     strcat(url, channel->id);
 
     const char* raw = net_get(url);
-
+	
     free(url);
 
     xmlDoc* doc = NULL;
@@ -80,7 +82,7 @@ int channel_get_vids(Channel *channel, vid_cb callback, void* data) {
 
     for(root=root->children; root!=NULL; root=root->next){
         if(STR_EQ(root->name, "entry")){
-            Video* v = video_new();
+            struct Video* v = video_new();
 
             v->channel_name = strdup(channel_name(channel));
             v->channel_id = strdup(channel->id);
