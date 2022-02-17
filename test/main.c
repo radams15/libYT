@@ -13,8 +13,16 @@
 #define COMMAND "echo "
 #endif
 
+void vid_got(struct Video* vid, void* data){
+    printf("%s - %s\n", vid->channel_name, vid->title);
+}
+
 int main() {
-    struct Config* conf = config_new("yt_saves.json");
+    //struct Config* conf = config_new("test/yt_saves.json");
+    struct Config* conf = config_new("/home/rhys/.local/share/yt_saves.json");
+
+    //config_get_vids(conf, vid_got, NULL);
+    //return;
 
     struct Videos* vids = config_get_vids_list(conf);
 

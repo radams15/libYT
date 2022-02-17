@@ -20,7 +20,11 @@ add_executable(ytplay test/main.c)
 target_link_libraries(ytplay yt)
 
 target_link_libraries(yt PRIVATE ${CURL_LIBRARIES})
+
+
+if(${APPLE})
 set_target_properties(yt PROPERTIES LINK_FLAGS "-Wl,-F/System/Library/Frameworks")
+endif()
 
 install(TARGETS yt DESTINATION lib/yt)
 install(TARGETS ytplay DESTINATION bin)

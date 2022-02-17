@@ -19,7 +19,7 @@ struct Video {
     char* channel_name;
     char* channel_id;
     size_t published;
-} Video;
+};
 
 struct Video* video_new();
 void video_free(struct Video* video);

@@ -9,6 +9,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <pthread.h>
 
 void config_load(struct Config* conf){
     const char* data = read_file(conf->file);
@@ -88,11 +89,41 @@ void config_subs_add(struct Config* conf, struct Channel* channel) {
     conf->subs->array[conf->subs->length-1] = channel;
 }
 
+
+struct ThreadData{
+    struct Channel* c;
+    struct Config* conf;
+    vid_cb callback;
+    void *data;
+};
+
+void* get_vid(void* ptr){
+    struct ThreadData* data = ptr;
+
+    channel_get_vids(data->c, data->conf, data->callback, data->data);
+
+    pthread_exit(NULL);
+}
+
 int config_get_vids(struct Config *conf, vid_cb callback, void *data) {
+    pthread_t* threads = malloc(conf->subs->length*sizeof(pthread_t));
+
     for(int i=0 ; i<conf->subs->length ; i++){
-        //TODO Threading
         struct Channel* c = conf->subs->array[i];
-        channel_get_vids(c, conf, callback, data);
+
+        struct ThreadData* thread_data = malloc(sizeof(struct ThreadData));
+
+        thread_data->c = c;
+        thread_data->conf = conf;
+        thread_data->callback = callback;
+        thread_data->data = data;
+
+        pthread_create(&threads[i], NULL, get_vid, thread_data);
+    }
+
+    for(int i=0 ; i<conf->subs->length ; i++){
+        void* status;
+        pthread_join(threads[i], &status);
     }
 
     return EXIT_SUCCESS;

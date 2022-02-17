@@ -67,7 +67,7 @@ int channel_get_vids(struct Channel *channel, struct Config* conf, vid_cb callba
     cJSON_ArrayForEach(video, videos){
         struct Video* v = video_new();
 
-        v->channel_name = strdup(channel_name(channel));
+        v->channel_name = strdup(channel_name(channel, conf));
         v->channel_id = strdup(channel->id);
 
         v->title = cJSON_GetStringValue(cJSON_GetObjectItem(video, "title"));

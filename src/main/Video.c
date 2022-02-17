@@ -24,7 +24,7 @@ void video_free(struct Video *video) {
 }
 
 struct Video* video_new() {
-    struct Video* out = malloc(sizeof(Video));
+    struct Video* out = malloc(sizeof(struct Video));
 
     out->id = "";
     out->title = "";
