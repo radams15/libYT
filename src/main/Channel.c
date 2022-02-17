@@ -5,14 +5,12 @@
 #include "Channel.h"
 #include "Util.h"
 #include "Net.h"
+#include "Config.h"
+#include "cJSON.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
-
-#include <libxml/parser.h>
-#include <libxml/tree.h>
-
-#define STR_EQ(a, b) (!xmlStrcmp(a, (const xmlChar *) b))
 
 struct Channel* channel_new(const char* id) {
     struct Channel* out = malloc(sizeof(struct Channel));
@@ -42,43 +40,34 @@ const char* channel_name(struct Channel* channel) {
     return (const char*) channel->name;
 }
 
-void make_video(xmlNode* node, struct Video* vid, int level){
-    for(xmlNode* i=node->children; i!=NULL; i=i->next){
-        const xmlChar* key = i->name;
+int channel_get_vids(struct Channel *channel, struct Config* conf, vid_cb callback, void* data) {
+    char* url = calloc(strlen(conf->invidious_inst) + strlen(channel->id) + 32, sizeof(char));
 
-        if(STR_EQ(key, "group")){
-            make_video(i, vid, level+1);
-        } else if(STR_EQ(key, "link")){
-            vid->link = ((char*) xmlGetProp(i, (const xmlChar*)"href"));
-        } else if(STR_EQ(key, "published")){
-            vid->publish_date = ((char*) xmlNodeGetContent(i));
-        }else if(STR_EQ(key, "title")){
-            vid->title = ((char*) xmlNodeGetContent(i));
-        }
-    }
-}
-
-int channel_get_vids(struct Channel *channel, vid_cb callback, void* data) {
-    const char* url_base = "https://therhys.co.uk/yt/feed.php?id=";
-    char* url = calloc(strlen(url_base) + strlen(channel->id) + 1, sizeof(char));
-    strcpy(url, url_base);
-    strcat(url, channel->id);
+    sprintf(url, "%s/api/v1/channels/%s", conf->invidious_inst, channel->id);
 
     const char* raw = net_get(url);
 	
     free(url);
 
-    xmlDoc* doc = NULL;
-    xmlNode* root = NULL;
+    cJSON* json = cJSON_Parse(raw);
 
-    if(!(doc = xmlReadMemory(raw, strlen(raw), "", "utf-8", 0))){
-        printf("error: could not parse data\n");
-        return 1;
+    cJSON* videos = cJSON_GetObjectItem(json, "latestVideos");
+
+    cJSON* video;
+    cJSON_ArrayForEach(video, videos){
+        struct Video* v = video_new();
+
+        v->channel_name = strdup(channel_name(channel));
+        v->channel_id = strdup(channel->id);
+
+        v->title = cJSON_GetStringValue(cJSON_GetObjectItem(video, "title"));
+        v->id = cJSON_GetStringValue(cJSON_GetObjectItem(video, "videoID"));
+        v->published = cJSON_GetNumberValue(cJSON_GetObjectItem(video, "lengthSeconds"));
+
+        callback(v, data);
     }
 
-    root = xmlDocGetRootElement(doc);
-
-    for(root=root->children; root!=NULL; root=root->next){
+    /*for(root=root->children; root!=NULL; root=root->next){
         if(STR_EQ(root->name, "entry")){
             struct Video* v = video_new();
 
@@ -89,7 +78,7 @@ int channel_get_vids(struct Channel *channel, vid_cb callback, void* data) {
 
             callback(v, data);
         }
-    }
+    }*/
 
     return 0;
 }

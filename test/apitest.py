@@ -15,7 +15,7 @@ def get_api(path):
 
     return None
 
-data = json.loads(get_api("/api/v1/videos/{}".format(vid)))
+data = json.loads(get_api("/api/v1/channels/UCbguawtJlHjxXzdAskubQVg"))
 
-for d in sorted(data["formatStreams"], key=lambda x: x["qualityLabel"]):
+for d in data["latestVideos"]:
     print(d)

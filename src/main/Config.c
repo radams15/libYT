@@ -92,7 +92,7 @@ int config_get_vids(struct Config *conf, vid_cb callback, void *data) {
     for(int i=0 ; i<conf->subs->length ; i++){
         //TODO Threading
         struct Channel* c = conf->subs->array[i];
-        channel_get_vids(c, callback, data);
+        channel_get_vids(c, conf, callback, data);
     }
 
     return EXIT_SUCCESS;

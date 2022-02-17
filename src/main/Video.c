@@ -15,11 +15,10 @@
 #define FREE_NOTNULL(a) if(strlen(a) > 0){ free((void*) a); }
 
 void video_free(struct Video *video) {
-    FREE_NOTNULL(video->link)
+    FREE_NOTNULL(video->id)
     FREE_NOTNULL(video->title)
     FREE_NOTNULL(video->channel_name)
     FREE_NOTNULL(video->channel_id)
-    FREE_NOTNULL(video->publish_date)
 
     free(video);
 }
@@ -27,21 +26,20 @@ void video_free(struct Video *video) {
 struct Video* video_new() {
     struct Video* out = malloc(sizeof(Video));
 
-    out->link = "";
+    out->id = "";
     out->title = "";
     out->channel_name = "";
     out->channel_id = "";
-    out->publish_date = "";
 
     return out;
 }
 
 const char* video_get_playable(struct Video* video, struct Config* conf) {
-    unsigned int len = strlen(conf->invidious_inst) + strlen(video->link) + 32;
+    unsigned int len = strlen(conf->invidious_inst) + strlen(video->id) + 32;
 
     char* url = malloc((len*sizeof(char))+5);
 
-    sprintf(url, "%s/api/v1/videos/%s", conf->invidious_inst, video->link+32); // +32 as there are 32 chars before the url code. Increment ptr 32 places to get just code
+    sprintf(url, "%s/api/v1/videos/%s", conf->invidious_inst, video->id);
 
     const char* raw = net_get(url);
 
@@ -65,5 +63,5 @@ const char* video_get_playable(struct Video* video, struct Config* conf) {
         }
     }
 
-    return "";
+    return "No streams found!";
 }

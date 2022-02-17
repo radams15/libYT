@@ -22,7 +22,7 @@ struct Channel* channel_new(const char* id);
 
 const char* channel_name(struct Channel* channel);
 
-int channel_get_vids(struct Channel* channel, vid_cb callback, void* data);
+int channel_get_vids(struct Channel* channel, struct Config* conf, vid_cb callback, void* data);
 
 void channel_free(struct Channel* channel);
 

@@ -9,14 +9,16 @@
 extern "C"{
 #endif
 
+#include <stddef.h>
+
 struct Config;
 
 struct Video {
-    char* link;
+    char* id;
     char* title;
     char* channel_name;
     char* channel_id;
-    char* publish_date;
+    size_t published;
 } Video;
 
 struct Video* video_new();
