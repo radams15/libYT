@@ -20,7 +20,7 @@ struct Channel{
 
 struct Channel* channel_new(const char* id);
 
-const char* channel_name(struct Channel* channel);
+const char* channel_name(struct Channel* channel, struct Config* conf);
 
 int channel_get_vids(struct Channel* channel, struct Config* conf, vid_cb callback, void* data);
 

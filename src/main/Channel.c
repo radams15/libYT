@@ -30,11 +30,21 @@ void channel_free(struct Channel* channel) {
     free(channel);
 }
 
-const char* channel_name(struct Channel* channel) {
+const char* channel_name(struct Channel* channel, struct Config* conf) {
     if(strlen(channel->name) == 0){
-        const char* name = "TODO";
-        channel->name = strdup("TODO");
+        char* url = calloc(strlen(conf->invidious_inst) + strlen(channel->id) + 32, sizeof(char));
 
+        sprintf(url, "%s/api/v1/channels/%s", conf->invidious_inst, channel->id);
+
+        const char* raw = net_get(url);
+
+        free(url);
+
+        cJSON* json = cJSON_Parse(raw);
+
+        channel->name = cJSON_GetStringValue(cJSON_GetObjectItem(json, "author"));
+
+        cJSON_free(json);
     }
 
     return (const char*) channel->name;
@@ -67,18 +77,8 @@ int channel_get_vids(struct Channel *channel, struct Config* conf, vid_cb callba
         callback(v, data);
     }
 
-    /*for(root=root->children; root!=NULL; root=root->next){
-        if(STR_EQ(root->name, "entry")){
-            struct Video* v = video_new();
-
-            v->channel_name = strdup(channel_name(channel));
-            v->channel_id = strdup(channel->id);
-
-            make_video(root, v, 0);
-
-            callback(v, data);
-        }
-    }*/
+    cJSON_free(json);
+    cJSON_free(videos);
 
     return 0;
 }
