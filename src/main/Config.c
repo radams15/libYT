@@ -10,27 +10,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-const char* read_file(const char* fname){
-    char * buffer = 0;
-    long length;
-    FILE* file = fopen (fname, "rb");
-
-    if (file) {
-        fseek (file, 0, SEEK_END);
-        length = ftell (file);
-        fseek (file, 0, SEEK_SET);
-        buffer = malloc (length);
-
-        if (buffer) {
-            fread (buffer, 1, length, file);
-        }
-
-        fclose (file);
-    }
-
-    return buffer;
-}
-
 void config_load(struct Config* conf){
     const char* data = read_file(conf->file);
 	

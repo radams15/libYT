@@ -9,9 +9,8 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "Constants.h"
-
 #include "Config.h"
+#include "cJSON.h"
 
 #define FREE_NOTNULL(a) if(strlen(a) > 0){ free((void*) a); }
 
@@ -38,15 +37,33 @@ struct Video* video_new() {
 }
 
 const char* video_get_playable(struct Video* video, struct Config* conf) {
-    unsigned int len = strlen(BASE_URL) + strlen(video->link) + 32;
+    unsigned int len = strlen(conf->invidious_inst) + strlen(video->link) + 32;
 
     char* url = malloc((len*sizeof(char))+5);
 
-    sprintf(url, BASE_URL "stream.php?url=%s&quality=best[height<=%d]", video->link, conf->quality);
+    sprintf(url, "%s/api/v1/videos/%s", conf->invidious_inst, video->link+32); // +32 as there are 32 chars before the url code. Increment ptr 32 places to get just code
 
-    const char* stream_url = net_get(url);
+    const char* raw = net_get(url);
 
     free(url);
 
-    return stream_url;
+    cJSON* json = cJSON_Parse(raw);
+
+    cJSON* streams = cJSON_GetObjectItem(json, "formatStreams");
+
+    cJSON* stream;
+    cJSON_ArrayForEach(stream, streams){
+        char* quality_str = cJSON_GetStringValue(cJSON_GetObjectItem(stream, "qualityLabel"));
+        quality_str[strlen(quality_str)-1] = 0;
+
+        int quality = atoi(quality_str);
+
+        free(quality_str);
+
+        if(quality == conf->quality){
+            return cJSON_GetStringValue(cJSON_GetObjectItem(stream, "url"));
+        }
+    }
+
+    return "";
 }

@@ -9,8 +9,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "Constants.h"
-
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 
@@ -61,7 +59,7 @@ void make_video(xmlNode* node, struct Video* vid, int level){
 }
 
 int channel_get_vids(struct Channel *channel, vid_cb callback, void* data) {
-    const char* url_base = BASE_URL "feed.php?id=";
+    const char* url_base = "https://therhys.co.uk/yt/feed.php?id=";
     char* url = calloc(strlen(url_base) + strlen(channel->id) + 1, sizeof(char));
     strcpy(url, url_base);
     strcat(url, channel->id);
@@ -73,7 +71,7 @@ int channel_get_vids(struct Channel *channel, vid_cb callback, void* data) {
     xmlDoc* doc = NULL;
     xmlNode* root = NULL;
 
-    if(!(doc = xmlReadMemory(raw, strlen(raw), "", "utf-8", NULL))){
+    if(!(doc = xmlReadMemory(raw, strlen(raw), "", "utf-8", 0))){
         printf("error: could not parse data\n");
         return 1;
     }

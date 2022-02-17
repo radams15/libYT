@@ -18,4 +18,4 @@ def get_api(path):
 data = json.loads(get_api("/api/v1/videos/{}".format(vid)))
 
 for d in sorted(data["formatStreams"], key=lambda x: x["qualityLabel"]):
-    print(d["qualityLabel"])
+    print(d)
