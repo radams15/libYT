@@ -3,7 +3,6 @@
 //
 
 #include "Channel.h"
-#include "Util.h"
 #include "Net.h"
 #include "Config.h"
 #include "cJSON.h"
@@ -36,7 +35,7 @@ const char* channel_name(struct Channel* channel, struct Config* conf) {
 
         sprintf(url, "%s/api/v1/channels/%s", conf->invidious_inst, channel->id);
 
-        const char* raw = net_get(url);
+        const char* raw = net_get(conf->net, url);
 
         free(url);
 
@@ -55,7 +54,7 @@ int channel_get_vids(struct Channel *channel, struct Config* conf, vid_cb callba
 
     sprintf(url, "%s/api/v1/channels/%s", conf->invidious_inst, channel->id);
 
-    const char* raw = net_get(url);
+    const char* raw = net_get(conf->net, url);
 	
     free(url);
 
@@ -72,7 +71,7 @@ int channel_get_vids(struct Channel *channel, struct Config* conf, vid_cb callba
 
         v->title = cJSON_GetStringValue(cJSON_GetObjectItem(video, "title"));
         v->id = cJSON_GetStringValue(cJSON_GetObjectItem(video, "videoID"));
-        v->published = cJSON_GetNumberValue(cJSON_GetObjectItem(video, "lengthSeconds"));
+        v->published = cJSON_GetNumberValue(cJSON_GetObjectItem(video, "published"));
 
         callback(v, data);
     }

@@ -30,4 +30,28 @@ void channel_free(struct Channel* channel);
 }
 #endif
 
+#ifdef __cplusplus
+
+#include <string>
+
+namespace mm{
+    class Config;
+
+    class Channel{
+    private:
+        struct ::Channel* ptr;
+        Config* conf;
+
+    public:
+        Channel(std::string id, Config* conf);
+
+        std::string id();
+        std::string name();
+        void get_vids(vid_cb callback, void* data=NULL);
+
+        ~Channel();
+    };
+}
+#endif
+
 #endif //YOUTUBE_CHANNEL_H

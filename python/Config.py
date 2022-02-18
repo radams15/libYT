@@ -4,8 +4,9 @@ from Channel import Channel
 from Video import Video
 
 class Config:
-    def __init__(self, file):
-        self._ptr = yt.config_new(file)
+    def __init__(self, file, use_threading=True, use_proxy=True):
+        self._ptr = yt.config_new(file, int(use_proxy))
+        self._ptr.use_threading = int(use_threading)
 
     def file(self):
         return self._ptr.file
@@ -26,7 +27,7 @@ class Config:
             for x in range(0, vids.length)
         ]
 
-        return sorted(out, key=lambda x: x.publish_date())
+        return sorted(out, key=lambda x: x.published())
 
     def __del__(self):
         yt.config_free(self._ptr)

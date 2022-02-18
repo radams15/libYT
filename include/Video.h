@@ -30,4 +30,30 @@ const char* video_get_playable(struct Video* video, struct Config* conf);
 }
 #endif
 
+#ifdef __cplusplus
+
+#include <string>
+
+namespace mm{
+    class Config;
+
+    class Video{
+    private:
+        struct ::Video* ptr;
+    public:
+        Video(struct ::Video* ptr);
+
+        std::string id();
+        std::string title();
+        std::string channel_name();
+        std::string channel_id();
+        size_t published();
+
+        std::string get_playable(Config* conf);
+
+        ~Video();
+    };
+}
+#endif
+
 #endif //YOUTUBE_VIDEO_H

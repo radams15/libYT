@@ -54,16 +54,19 @@ void config_save(struct Config* conf){
     cJSON_Delete(json);
 }
 
-struct Config* config_new(const char* file) {
+struct Config* config_new(const char* file, int use_proxy) {
     struct Config* out = malloc(sizeof(struct Config));
 
     out->file = strdup(file);
     out->invidious_inst = strdup("http://vid.puffyan.us"); //TODO load from file.
     out->quality = 480;
     out->subs = malloc(sizeof(struct Subs));
+    out->use_threading = 1;
 
     out->subs->array = malloc(1);
     out->subs->length = 0;
+
+    out->net = net_new(use_proxy);
 
     config_load(out);
 
@@ -106,24 +109,32 @@ void* get_vid(void* ptr){
 }
 
 int config_get_vids(struct Config *conf, vid_cb callback, void *data) {
-    pthread_t* threads = malloc(conf->subs->length*sizeof(pthread_t));
+    if(conf->use_threading) {
+        pthread_t *threads = malloc(conf->subs->length * sizeof(pthread_t));
 
-    for(int i=0 ; i<conf->subs->length ; i++){
-        struct Channel* c = conf->subs->array[i];
+        for (int i = 0; i < conf->subs->length; i++) {
+            struct Channel *c = conf->subs->array[i];
 
-        struct ThreadData* thread_data = malloc(sizeof(struct ThreadData));
+            struct ThreadData *thread_data = malloc(sizeof(struct ThreadData));
 
-        thread_data->c = c;
-        thread_data->conf = conf;
-        thread_data->callback = callback;
-        thread_data->data = data;
+            thread_data->c = c;
+            thread_data->conf = conf;
+            thread_data->callback = callback;
+            thread_data->data = data;
 
-        pthread_create(&threads[i], NULL, get_vid, thread_data);
-    }
+            pthread_create(&threads[i], NULL, get_vid, thread_data);
+        }
 
-    for(int i=0 ; i<conf->subs->length ; i++){
-        void* status;
-        pthread_join(threads[i], &status);
+        for (int i = 0; i < conf->subs->length; i++) {
+            void *status;
+            pthread_join(threads[i], &status);
+        }
+    }else{
+        for (int i = 0; i < conf->subs->length; i++) {
+            struct Channel *c = conf->subs->array[i];
+
+            channel_get_vids(c, conf, callback, data);
+        }
     }
 
     return EXIT_SUCCESS;

@@ -2,6 +2,6 @@ ARCH=-arch i386 -arch ppc -arch x86_64
 #ARCH=-arch x86_64
 
 all:
-	cp ../ffi/libyt.dylib .
+	cp ../cpp/libytmm.dylib .
 
-	gcc main.c -I../include/ -L. -o main -lyt ${ARCH} -std=c99
+	g++ main.cpp -I../include/ -L. -o main -lytmm ${ARCH} -std=c++98

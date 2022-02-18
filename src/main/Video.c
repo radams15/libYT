@@ -41,7 +41,7 @@ const char* video_get_playable(struct Video* video, struct Config* conf) {
 
     sprintf(url, "%s/api/v1/videos/%s", conf->invidious_inst, video->id);
 
-    const char* raw = net_get(url);
+    const char* raw = net_get(conf->net, url);
 
     free(url);
 

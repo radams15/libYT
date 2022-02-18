@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
-project(yt C)
+project(yt C CXX)
 
 set(CMAKE_C_STANDARD 99)
+set(CMAKE_CXX_STANDARD 98)
 
 include(GNUInstallDirs)
 
@@ -16,8 +17,11 @@ set(HEADERS include/Channel.h include/Config.h include/Video.h include/Net.h)
 
 add_library(yt SHARED src/main/Config.c src/main/Channel.c src/main/Video.c src/main/Util.c src/main/Net.c lib/cJSON/cJSON.c lib/cJSON/cJSON_Utils.c)
 
-add_executable(ytplay test/main.c)
-target_link_libraries(ytplay yt)
+add_library(ytmm SHARED src/main/mm/Channel.cpp include/Channel.h src/main/mm/Config.cpp include/Config.h src/main/mm/Video.cpp include/Video.h src/main/mm/Net.cpp)
+target_link_libraries(ytmm yt)
+
+add_executable(ytplay test/main.cpp)
+target_link_libraries(ytplay ytmm)
 
 target_link_libraries(yt PRIVATE ${CURL_LIBRARIES})
 
