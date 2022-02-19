@@ -10,6 +10,11 @@ mm::Video::Video(struct ::Video *ptr) {
     this->ptr = ptr;
 }
 
+struct ::Video* mm::Video::cptr() {
+    return ptr;
+}
+
+
 std::string mm::Video::id() {
     return std::string(ptr->id);
 }

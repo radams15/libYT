@@ -13,17 +13,18 @@ OBJ_EXT="so"
 endif
 
 ifeq (${OS}, darwin)
-ARCH=-arch i386 -arch x86_64 -arch ppc
-#ARCH=-arch ppc
+#ARCH=-arch i386 -arch x86_64 -arch ppc
+ARCH=-arch x86_64
 OBJ_EXT="dylib"
 
-CC="gcc-4.2"
-CXX="g++-4.2"
+#CC="gcc-4.2"
+#CXX="g++-4.2"
+
 CFLAGS+=${ARCH}
 CXXFLAGS+=${ARCH}
 endif
 
-all: c cpp link
+all: clean c cpp link
 
 c:
 	mkdir -p c
@@ -35,6 +36,10 @@ cpp:
 
 link:
 	${CXX} -shared -o libytmm.${OBJ_EXT} -fPIC -lcurl cpp/*.o c/*.o ${CXXFLAGS}
+
+install:
+	cp ../include/*.h ../../MacTube/lib/
+	cp libytmm.dylib ../../MacTube/lib/
 
 clean:
 	 rm -rf c/ cpp/ libytmm.dylib

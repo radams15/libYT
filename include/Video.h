@@ -49,6 +49,8 @@ namespace mm{
         std::string channel_id();
         size_t published();
 
+        struct ::Video* cptr();
+
         std::string get_playable(Config* conf);
 
         ~Video();

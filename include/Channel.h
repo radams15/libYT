@@ -20,6 +20,8 @@ struct Channel{
 
 struct Channel* channel_new(const char* id);
 
+struct Channel* channel_new_from_name(const char* name, struct Config* conf);
+
 const char* channel_name(struct Channel* channel, struct Config* conf);
 
 int channel_get_vids(struct Channel* channel, struct Config* conf, vid_cb callback, void* data);
@@ -40,14 +42,18 @@ namespace mm{
     class Channel{
     private:
         struct ::Channel* ptr;
-        Config* conf;
 
     public:
-        Channel(std::string id, Config* conf);
+        Channel();
+        explicit Channel(std::string id);
+
+        static Channel* from_name(std::string name, mm::Config* conf);
 
         std::string id();
-        std::string name();
-        void get_vids(vid_cb callback, void* data=NULL);
+        std::string name(Config* conf);
+        void get_vids(vid_cb callback, mm::Config* conf, void* data=NULL);
+
+        struct ::Channel* cptr();
 
         ~Channel();
     };

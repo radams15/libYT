@@ -13,6 +13,9 @@
 
 void config_load(struct Config* conf){
     const char* data = read_file(conf->file);
+    if(data == NULL){
+        return;
+    }
 	
     cJSON* json = cJSON_Parse(data);
 
@@ -33,8 +36,6 @@ void config_load(struct Config* conf){
 }
 
 void config_save(struct Config* conf){
-    const char* data = read_file(conf->file);
-
     cJSON* json = cJSON_CreateObject();
 
     cJSON_AddNumberToObject(json, "quality", conf->quality);

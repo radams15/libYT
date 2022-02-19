@@ -25,6 +25,18 @@ target_link_libraries(ytplay ytmm)
 
 target_link_libraries(yt PRIVATE ${CURL_LIBRARIES})
 
+# https://github.com/sheldonth/ios-cmake
+set_target_properties(ytmm PROPERTIES
+        FRAMEWORK TRUE
+        FRAMEWORK_VERSION A
+        MACOSX_FRAMEWORK_IDENTIFIER uk.co.therhys.yt
+        MACOSX_FRAMEWORK_INFO_PLIST ${CMAKE_SOURCE_DIR}/res/framework.plist
+        # "current version" in semantic format in Mach-O binary file
+        VERSION 1.0.0
+        # "compatibility version" in semantic format in Mach-O binary file
+        SOVERSION 1.0.0
+        PUBLIC_HEADER "${HEADERS}"
+        )
 
 if(${APPLE})
 set_target_properties(yt PROPERTIES LINK_FLAGS "-Wl,-F/System/Library/Frameworks")

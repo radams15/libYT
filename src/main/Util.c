@@ -19,18 +19,18 @@ char* strdup(const char *in) {
 }
 
 const char* read_file(const char* fname){
-    char * buffer = 0;
+    char* buffer = NULL;
     long length;
-    FILE* file = fopen (fname, "rb");
+    FILE* file = fopen(fname, "rb");
 
     if (file) {
-        fseek (file, 0, SEEK_END);
-        length = ftell (file);
-        fseek (file, 0, SEEK_SET);
-        buffer = malloc (length);
+        fseek(file, 0, SEEK_END);
+        length = ftell(file);
+        fseek(file, 0, SEEK_SET);
+        buffer = malloc(length);
 
-        if (buffer) {
-            fread (buffer, 1, length, file);
+        if(buffer) {
+            fread(buffer, 1, length, file);
         }
 
         fclose (file);

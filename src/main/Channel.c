@@ -20,6 +20,34 @@ struct Channel* channel_new(const char* id) {
     return out;
 }
 
+struct Channel* channel_new_from_name(const char *name, struct Config* conf) {
+    char* url = calloc(strlen(conf->invidious_inst) + strlen(name) + 64, sizeof(char));
+
+    sprintf(url, "%s/api/v1/search?type=channel&q=%s", conf->invidious_inst, name);
+
+    const char* raw = net_get(conf->net, url);
+
+    free(url);
+
+    cJSON* json = cJSON_Parse(raw);
+
+    if(cJSON_GetArraySize(json) == 0){
+        fprintf(stderr, "Cannot find valid channel name for: %s\n", name);
+
+        cJSON_free(json);
+
+        return NULL;
+    }
+
+    cJSON* first_result = cJSON_GetArrayItem(json, 0);
+
+    const char* id = cJSON_GetStringValue(cJSON_GetObjectItem(first_result, "authorID"));
+
+    cJSON_free(json);
+
+    return channel_new(id);
+}
+
 void channel_free(struct Channel* channel) {
     free(channel->id);
     if(strlen(channel->name) > 0){

@@ -35,6 +35,8 @@ struct Config* config_new(const char* file, int use_proxy);
 
 void config_subs_add(struct Config* conf, struct Channel* channel);
 
+void config_save(struct Config* conf);
+
 struct Videos* config_get_vids_list(struct Config* conf);
 void videos_free(struct Videos* vids);
 
@@ -65,9 +67,13 @@ namespace mm{
 
         void get_vids(vid_cb callback, void* data=NULL);
 
+        void add_sub(mm::Channel* sub);
+
         std::vector<Video*>* get_vids_list();
 
         struct ::Config* cptr();
+
+        void save();
 
         Net* net();
 

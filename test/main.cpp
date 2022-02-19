@@ -16,10 +16,10 @@ void vid_got(struct Video* vid, void* data){
 }
 
 int main() {
-    mm::Config conf("/Users/rhys/Library/yt_saves.json", true);
+    mm::Config* conf = new mm::Config((std::string) "/Users/rhys/Library/yt_saves.json", true);
     //mm::Config conf("yt_saves.json", true);
 
-    std::vector<mm::Video*>* vids = conf.get_vids_list();
+    std::vector<mm::Video*>* vids = conf->get_vids_list();
 
     for(int i=0 ; i<vids->size() ; i++){
         mm::Video* vid = vids->at(i);
