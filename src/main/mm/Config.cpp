@@ -35,10 +35,6 @@ void mm::Config::save() {
     config_save(ptr);
 }
 
-mm::Net* mm::Config::net() {
-    return new mm::Net(ptr->net);
-}
-
 struct Config* mm::Config::cptr() {
     return ptr;
 }

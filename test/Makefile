@@ -1,5 +1,5 @@
-#ARCH=-arch i386 -arch ppc -arch x86_64
-ARCH=-arch x86_64
+ARCH=-arch i386 -arch ppc -arch x86_64
+#ARCH=-arch x86_64
 CXX=g++
 
 all: copy comp

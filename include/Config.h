@@ -23,7 +23,8 @@ struct Config{
     struct Subs* subs;
     const char* invidious_inst;
     int use_threading;
-    struct Net* net;
+    int use_proxy;
+    const char* proxy_url;
 };
 
 struct Videos {
@@ -74,8 +75,6 @@ namespace mm{
         struct ::Config* cptr();
 
         void save();
-
-        Net* net();
 
         ~Config();
     };

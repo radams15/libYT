@@ -25,7 +25,7 @@ struct Channel* channel_new_from_name(const char *name, struct Config* conf) {
 
     sprintf(url, "%s/api/v1/search?type=channel&q=%s", conf->invidious_inst, name);
 
-    const char* raw = net_get(conf->net, url);
+    const char* raw = net_get(url, conf->use_proxy, conf->proxy_url);
 
     free(url);
 
@@ -63,7 +63,7 @@ const char* channel_name(struct Channel* channel, struct Config* conf) {
 
         sprintf(url, "%s/api/v1/channels/%s", conf->invidious_inst, channel->id);
 
-        const char* raw = net_get(conf->net, url);
+        const char* raw = net_get(url, conf->use_proxy, conf->proxy_url);
 
         free(url);
 
@@ -82,7 +82,7 @@ int channel_get_vids(struct Channel *channel, struct Config* conf, vid_cb callba
 
     sprintf(url, "%s/api/v1/channels/%s", conf->invidious_inst, channel->id);
 
-    const char* raw = net_get(conf->net, url);
+    const char* raw = net_get(url, conf->use_proxy, conf->proxy_url);
 	
     free(url);
 

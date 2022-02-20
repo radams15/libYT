@@ -11,11 +11,11 @@ CFLAGS+=`pkg-config --libs --cflags libcurl`
 endif
 
 ifeq (${OS}, darwin)
-ARCH=-arch i386 -arch x86_64 -arch ppc
-#ARCH=-arch x86_64
+#ARCH=-arch i386 -arch x86_64 -arch ppc
+ARCH=-arch x86_64
 OBJ_EXT="dylib"
 
-CC="gcc-4.2"
+#CC="gcc-4.2"
 CFLAGS+=${ARCH} `pkg-config --libs --cflags libcurl`
 endif
 

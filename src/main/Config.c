@@ -67,7 +67,8 @@ struct Config* config_new(const char* file, int use_proxy) {
     out->subs->array = malloc(1);
     out->subs->length = 0;
 
-    out->net = net_new(use_proxy);
+    out->use_proxy = use_proxy;
+    out->proxy_url = strdup("http://therhys.co.uk/yt/proxy.php?url=");
 
     config_load(out);
 
