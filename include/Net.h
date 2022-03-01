@@ -5,7 +5,7 @@
 #ifndef YOUTUBE_NET_H
 #define YOUTUBE_NET_H
 
-#include <stddef.h>
+#define size_t int
 
 #ifdef __cplusplus
 extern "C"{

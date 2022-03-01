@@ -9,7 +9,7 @@
 extern "C"{
 #endif
 
-#include <stddef.h>
+#define size_t int
 
 struct Config;
 
