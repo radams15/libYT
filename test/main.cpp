@@ -1,4 +1,5 @@
 #include <Config.h>
+#include <Videos.h>
 
 #include <iostream>
 
@@ -11,21 +12,20 @@
 #define COMMAND "echo "
 #endif
 
-void vid_got(struct Video* vid, void* data){
-    std::cout << vid->channel_name << " -> " << vid->title << std::endl;
-}
-
 int main() {
-    mm::Config* conf = new mm::Config((std::string) "/Users/rhys/Library/yt_saves.json", true);
-    //mm::Config conf("yt_saves.json", true);
+    Config* conf = config_new("/Users/rhys/Library/yt_saves.json", 1);
 
-    std::vector<mm::Video*>* vids = conf->get_vids_list();
+    Videos* vids = config_get_vids_list(conf);
 
-    for(int i=0 ; i<vids->size() ; i++){
-        mm::Video* vid = vids->at(i);
+    for(int i=0 ; i<vids->length ; i++){
+        Video* vid = videos_get(vids, i);
 
-        std::cout << vid->channel_name() << " -> " << vid->title() << std::endl;
+        std::cout << vid->channel_name << " -> " << vid->title << std::endl;
     }
+
+    videos_free(vids);
+
+    config_free(conf);
 
     return 0;
 }

@@ -5,79 +5,48 @@
 #ifndef YOUTUBE_CONFIG_H
 #define YOUTUBE_CONFIG_H
 
-#include <Channel.h>
 #include <Net.h>
+#include <Video.h>
+#include <Videos.h>
 
 #ifdef __cplusplus
 extern "C"{
 #endif
 
-struct Subs{
-    struct Channel** array;
-    int length;
-};
+typedef void (*vid_cb)(Video_t*, void*);
 
-struct Config{
-    const char* file;
+typedef struct Config{
+    const char* fname;
     int quality;
     struct Subs* subs;
     const char* invidious_inst;
     int use_threading;
     int use_proxy;
     const char* proxy_url;
-};
+} Config_t;
 
-struct Videos {
-    struct Video** array;
+#include <Channel.h>
+
+typedef struct Subs{
+    Channel_t** arry;
     int length;
-};
+} Subs_t;
 
-struct Config* config_new(const char* file, int use_proxy);
+Config_t* config_new(const char* fname, int use_proxy);
 
-void config_subs_add(struct Config* conf, struct Channel* channel);
+void config_subs_add(Config_t* conf, Channel_t* channel);
 
-void config_save(struct Config* conf);
+void config_save(Config_t* conf);
 
-struct Videos* config_get_vids_list(struct Config* conf);
-void videos_free(struct Videos* vids);
+Videos_t* config_get_vids_list(Config_t* conf);
 
-struct Video* videos_get(struct Videos* vids, int index);
+int config_get_vids(Config_t* conf, vid_cb callback, void* data);
 
-int config_get_vids(struct Config* conf, vid_cb callback, void* data);
+const char* video_get_playable(Video_t* video, Config_t* conf);
 
-void config_free(struct Config* conf);
-
-#ifdef __cplusplus
-}
-#endif
+void config_free(Config_t* conf);
 
 #ifdef __cplusplus
-#include <string>
-#include <vector>
-
-namespace mm{
-    class Video;
-
-    class Config{
-
-    private:
-        struct ::Config* ptr;
-
-    public:
-        Config(const std::string& file, bool use_proxy=false);
-
-        void get_vids(vid_cb callback, void* data=NULL);
-
-        void add_sub(mm::Channel* sub);
-
-        std::vector<Video*>* get_vids_list();
-
-        struct ::Config* cptr();
-
-        void save();
-
-        ~Config();
-    };
 }
 #endif
 

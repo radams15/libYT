@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.0)
 project(yt C CXX)
 
 set(CMAKE_C_STANDARD 99)
@@ -9,33 +9,36 @@ include(GNUInstallDirs)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(CURL REQUIRED libcurl)
 
+option(BUILD_YTPLAY "Build Example Application" ON)
+
 set(CMAKE_C_FLAGS "-std=c99")
 
 include_directories(${CURL_INCLUDE_DIRS} lib/cJSON include/)
 
-set(HEADERS include/Channel.h include/Config.h include/Video.h include/Net.h)
+set(YT_HEADER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include PARENT_SCOPE)
 
-add_library(yt SHARED src/main/Config.c src/main/Channel.c src/main/Video.c src/main/Util.c src/main/Net.c lib/cJSON/cJSON.c lib/cJSON/cJSON_Utils.c include/YT.h)
+set(YT_HEADERS include/Channel.h include/Config.h include/Video.h include/Net.h include/Videos.h)
 
-add_library(ytmm SHARED src/main/mm/Channel.cpp include/Channel.h src/main/mm/Config.cpp include/Config.h src/main/mm/Video.cpp include/Video.h)
-target_link_libraries(ytmm yt)
+add_library(yt SHARED ${YT_HEADERS} src/main/Config.c src/main/Channel.c src/main/Video.c src/main/Util.c src/main/Net.c lib/cJSON/cJSON.c lib/cJSON/cJSON_Utils.c include/YT.h include/Videos.h)
 
+if(BUILD_YTPLAY)
 add_executable(ytplay test/main.cpp)
-target_link_libraries(ytplay ytmm)
+target_link_libraries(ytplay yt)
+endif()
 
 target_link_libraries(yt PRIVATE ${CURL_LIBRARIES})
 
 # https://github.com/sheldonth/ios-cmake
-set_target_properties(ytmm PROPERTIES
+set_target_properties(yt PROPERTIES
         FRAMEWORK TRUE
         FRAMEWORK_VERSION A
         MACOSX_FRAMEWORK_IDENTIFIER uk.co.therhys.yt
-        MACOSX_FRAMEWORK_INFO_PLIST ${CMAKE_SOURCE_DIR}/res/framework.plist
-        # "current version" in semantic format in Mach-O binary file
+        MACOSX_FRAMEWORK_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/res/framework.plist
+        # "current version" in semantic format in Mach-O binary fname
         VERSION 1.0.0
-        # "compatibility version" in semantic format in Mach-O binary file
+        # "compatibility version" in semantic format in Mach-O binary fname
         SOVERSION 1.0.0
-        PUBLIC_HEADER "${HEADERS}"
+        PUBLIC_HEADER "${YT_HEADERS}"
         )
 
 if(${APPLE})
@@ -43,5 +46,7 @@ set_target_properties(yt PROPERTIES LINK_FLAGS "-Wl,-F/System/Library/Frameworks
 endif()
 
 install(TARGETS yt DESTINATION lib/yt)
+if(BUILD_YTPLAY)
 install(TARGETS ytplay DESTINATION bin)
-install(FILES ${HEADERS} DESTINATION include/yt)
+endif()
+install(FILES ${YT_HEADERS} DESTINATION include/yt)

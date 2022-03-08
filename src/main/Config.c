@@ -4,6 +4,7 @@
 
 #include "Config.h"
 #include "Util.h"
+#include "Videos.h"
 
 #include <cJSON.h>
 
@@ -12,7 +13,7 @@
 #include <pthread.h>
 
 void config_load(struct Config* conf){
-    const char* data = read_file(conf->file);
+    const char* data = read_file(conf->fname);
     if(data == NULL){
         return;
     }
@@ -42,11 +43,11 @@ void config_save(struct Config* conf){
 
     cJSON* subs = cJSON_AddArrayToObject(json, "subs");
     for(int i=0 ; i<conf->subs->length ; i++) {
-        cJSON_AddItemToArray(subs, cJSON_CreateString(conf->subs->array[i]->id));
+        cJSON_AddItemToArray(subs, cJSON_CreateString(conf->subs->arry[i]->id));
     }
 
     FILE *out;
-    if ((out = fopen(conf->file, "w")) != NULL) {
+    if ((out = fopen(conf->fname, "w")) != NULL) {
         fprintf(out, "%s\n", cJSON_Print(json));
         fclose(out);
     }
@@ -55,16 +56,16 @@ void config_save(struct Config* conf){
     cJSON_Delete(json);
 }
 
-struct Config* config_new(const char* file, int use_proxy) {
+struct Config* config_new(const char* fname, int use_proxy) {
     struct Config* out = malloc(sizeof(struct Config));
 
-    out->file = strdup(file);
-    out->invidious_inst = strdup("http://vid.puffyan.us"); //TODO load from file.
+    out->fname = strdup(fname);
+    out->invidious_inst = strdup("http://vid.puffyan.us"); //TODO load from fname.
     out->quality = 480;
     out->subs = malloc(sizeof(struct Subs));
     out->use_threading = 1;
 
-    out->subs->array = malloc(1);
+    out->subs->arry = malloc(1);
     out->subs->length = 0;
 
     out->use_proxy = use_proxy;
@@ -76,12 +77,12 @@ struct Config* config_new(const char* file, int use_proxy) {
 }
 
 void config_free(struct Config *conf) {
-    free((void*) conf->file);
+    free((void*) conf->fname);
     if(conf->subs->length > 0) {
         for(int i=0 ; i<conf->subs->length ; i++){
-            channel_free(conf->subs->array[i]);
+            channel_free(conf->subs->arry[i]);
         }
-        free(conf->subs->array);
+        free(conf->subs->arry);
     }
     free(conf->subs);
 }
@@ -89,9 +90,9 @@ void config_free(struct Config *conf) {
 void config_subs_add(struct Config* conf, struct Channel* channel) {
     conf->subs->length++;
 
-    conf->subs->array = realloc(conf->subs->array, conf->subs->length*sizeof(struct Channel*));
+    conf->subs->arry = realloc(conf->subs->arry, conf->subs->length * sizeof(struct Channel*));
 
-    conf->subs->array[conf->subs->length-1] = channel;
+    conf->subs->arry[conf->subs->length - 1] = channel;
 }
 
 
@@ -115,7 +116,7 @@ int config_get_vids(struct Config *conf, vid_cb callback, void *data) {
         pthread_t *threads = malloc(conf->subs->length * sizeof(pthread_t));
 
         for (int i = 0; i < conf->subs->length; i++) {
-            struct Channel *c = conf->subs->array[i];
+            struct Channel *c = conf->subs->arry[i];
 
             struct ThreadData *thread_data = malloc(sizeof(struct ThreadData));
 
@@ -133,7 +134,7 @@ int config_get_vids(struct Config *conf, vid_cb callback, void *data) {
         }
     }else{
         for (int i = 0; i < conf->subs->length; i++) {
-            struct Channel *c = conf->subs->array[i];
+            struct Channel *c = conf->subs->arry[i];
 
             channel_get_vids(c, conf, callback, data);
         }
@@ -146,15 +147,15 @@ void config_vid_list_appender(struct Video* vid, void* ptr){
     struct Videos* vids = ptr;
 
     vids->length++;
-    vids->array = realloc(vids->array, vids->length*sizeof(struct Video*));
+    vids->arry = realloc(vids->arry, vids->length * sizeof(struct Video*));
 
-    vids->array[vids->length-1] = vid;
+    vids->arry[vids->length - 1] = vid;
 }
 
 struct Videos* config_get_vids_list(struct Config *conf) {
     struct Videos* vids = malloc(sizeof(struct Videos));
     vids->length = 0;
-    vids->array = malloc(1);
+    vids->arry = malloc(1);
 
     config_get_vids(conf, config_vid_list_appender, (void*) vids);
 
@@ -163,7 +164,7 @@ struct Videos* config_get_vids_list(struct Config *conf) {
 
 struct Video* videos_get(struct Videos* vids, int index){
     if(index >=0 && index < vids->length){
-        return vids->array[index];
+        return vids->arry[index];
     }
 
     return NULL;
@@ -171,7 +172,7 @@ struct Video* videos_get(struct Videos* vids, int index){
 
 void videos_free(struct Videos* vids) {
     for(int i=0 ; i<vids->length ; i++){
-        video_free(vids->array[i]);
+        video_free(vids->arry[i]);
     }
 
     free(vids);

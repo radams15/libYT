@@ -5,58 +5,28 @@
 #ifndef YOUTUBE_CHANNEL_H
 #define YOUTUBE_CHANNEL_H
 
-#include "Video.h"
-
 #ifdef __cplusplus
 extern "C"{
 #endif
 
-typedef void (*vid_cb)(struct Video*, void*);
-
-struct Channel{
+typedef struct Channel{
     char* id;
     char* name;
-};
+} Channel_t;
 
-struct Channel* channel_new(const char* id);
+#include <Config.h>
 
-struct Channel* channel_new_from_name(const char* name, struct Config* conf);
+Channel_t* channel_new(const char* id);
 
-const char* channel_name(struct Channel* channel, struct Config* conf);
+Channel_t* channel_new_from_name(const char* name, Config_t* conf);
 
-int channel_get_vids(struct Channel* channel, struct Config* conf, vid_cb callback, void* data);
+const char* channel_name(Channel_t* channel, Config_t* conf);
 
-void channel_free(struct Channel* channel);
+int channel_get_vids(Channel_t* channel, Config_t* conf, vid_cb callback, void* data);
 
-#ifdef __cplusplus
-}
-#endif
+void channel_free(Channel_t* channel);
 
 #ifdef __cplusplus
-
-#include <string>
-
-namespace mm{
-    class Config;
-
-    class Channel{
-    private:
-        struct ::Channel* ptr;
-
-    public:
-        Channel();
-        explicit Channel(std::string id);
-
-        static Channel* from_name(std::string name, mm::Config* conf);
-
-        std::string id();
-        std::string name(Config* conf);
-        void get_vids(vid_cb callback, mm::Config* conf, void* data=NULL);
-
-        struct ::Channel* cptr();
-
-        ~Channel();
-    };
 }
 #endif
 

@@ -5,13 +5,11 @@
 #ifndef YOUTUBE_NET_H
 #define YOUTUBE_NET_H
 
-#define size_t int
-
 #ifdef __cplusplus
 extern "C"{
 #endif
 
-typedef void (*stream_cb)(void*, size_t);
+typedef void (*stream_cb)(void*, long);
 
 const char* net_get(const char* url, int use_proxy, const char* proxy);
 
