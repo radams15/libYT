@@ -19,7 +19,7 @@ set(YT_HEADER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include PARENT_SCOPE)
 
 set(YT_HEADERS include/Channel.h include/Config.h include/Video.h include/Net.h include/Videos.h)
 
-add_library(yt SHARED ${YT_HEADERS} src/main/Config.c src/main/Channel.c src/main/Video.c src/main/Util.c src/main/Net.c lib/cJSON/cJSON.c lib/cJSON/cJSON_Utils.c include/YT.h include/Videos.h)
+add_library(yt SHARED src/main/Config.c src/main/Channel.c src/main/Video.c src/main/Util.c src/main/Net.c lib/cJSON/cJSON.c lib/cJSON/cJSON_Utils.c include/YT.h include/Videos.h)
 
 if(BUILD_YTPLAY)
 add_executable(ytplay test/main.cpp)
@@ -28,25 +28,26 @@ endif()
 
 target_link_libraries(yt PRIVATE ${CURL_LIBRARIES})
 
-# https://github.com/sheldonth/ios-cmake
-set_target_properties(yt PROPERTIES
-        FRAMEWORK TRUE
-        FRAMEWORK_VERSION A
-        MACOSX_FRAMEWORK_IDENTIFIER uk.co.therhys.yt
-        MACOSX_FRAMEWORK_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/res/framework.plist
-        # "current version" in semantic format in Mach-O binary fname
-        VERSION 1.0.0
-        # "compatibility version" in semantic format in Mach-O binary fname
-        SOVERSION 1.0.0
-        PUBLIC_HEADER "${YT_HEADERS}"
-        )
 
 if(${APPLE})
-set_target_properties(yt PROPERTIES LINK_FLAGS "-Wl,-F/System/Library/Frameworks")
+    # https://github.com/sheldonth/ios-cmake
+    set_target_properties(yt PROPERTIES
+            FRAMEWORK TRUE
+            FRAMEWORK_VERSION A
+            MACOSX_FRAMEWORK_IDENTIFIER uk.co.therhys.yt
+            MACOSX_FRAMEWORK_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/res/framework.plist
+            # "current version" in semantic format in Mach-O binary fname
+            VERSION 1.0.0
+            # "compatibility version" in semantic format in Mach-O binary fname
+            SOVERSION 1.0.0
+            PUBLIC_HEADER "${YT_HEADERS}"
+            )
+
+    set_target_properties(yt PROPERTIES LINK_FLAGS "-Wl,-F/System/Library/Frameworks")
 endif()
 
-install(TARGETS yt DESTINATION lib/yt)
+install(TARGETS yt DESTINATION lib/)
 if(BUILD_YTPLAY)
 install(TARGETS ytplay DESTINATION bin)
 endif()
-install(FILES ${YT_HEADERS} DESTINATION include/yt)
+install(FILES ${YT_HEADERS} DESTINATION include/yt/)
