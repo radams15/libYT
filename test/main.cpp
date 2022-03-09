@@ -12,18 +12,14 @@
 #define COMMAND "echo "
 #endif
 
+void vid_get(Video_t* vid, void* ptr){
+    std::cout << vid->channel_name << " -> " << vid->title << std::endl;
+}
+
 int main() {
-    Config* conf = config_new("/Users/rhys/Library/yt_saves.json", 1);
+    Config* conf = config_new("/home/rhys/.local/share/yt_saves.json", 1);
 
-    Videos* vids = config_get_vids_list(conf);
-
-    for(int i=0 ; i<vids->length ; i++){
-        Video* vid = videos_get(vids, i);
-
-        std::cout << vid->channel_name << " -> " << vid->title << std::endl;
-    }
-
-    videos_free(vids);
+    config_get_vids(conf, vid_get, NULL);
 
     config_free(conf);
 
