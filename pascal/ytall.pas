@@ -15,7 +15,7 @@ interface
 }
 
   const
-    External_library='kernel32'; {Setup as you need}
+    External_library='libyt'; {Setup as you need}
 
   { Pointers to basic pascal types, inserted by h2pas conversion program.}
   
