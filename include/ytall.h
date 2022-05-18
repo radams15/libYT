@@ -20,13 +20,7 @@
 
 
 
-
-
-typedef void (*stream_cb)(void*, long);
-
-const char* net_get(const char* url, int use_proxy, const char* proxy);
-
-int net_stream(const char* url, stream_cb stream_func, int use_proxy, const char* proxy);
+const char* net_get(const char* url, int use_proxy, const char* proxy_url);
 
 
 
@@ -71,12 +65,10 @@ typedef struct Config{
 
 
 
-
 typedef struct Channel{
     char* id;
     char* name;
 } Channel_t;
-
 
 
 
@@ -110,5 +102,4 @@ int config_get_vids(Config_t* conf, vid_cb callback, void* data);
 const char* video_get_playable(Video_t* video, Config_t* conf);
 
 void config_free(Config_t* conf);
-
 

@@ -1,6 +1,6 @@
 OS=$(shell uname -s | tr '[:upper:]' '[:lower:]')
 
-CFLAGS="-std=c99"
+CFLAGS=-I../lib/librequest -L../lib/librequest -std=c99
 
 CC="gcc"
 
@@ -11,12 +11,12 @@ CFLAGS+=`pkg-config --libs --cflags libcurl`
 endif
 
 ifeq (${OS}, darwin)
-ARCH=-arch i386 -arch x86_64 -arch ppc
+ARCH=-arch x86_64 -arch ppc
 #ARCH=-arch x86_64
 OBJ_EXT="dylib"
 
 CC="gcc-4.2"
-CFLAGS+=${ARCH} `pkg-config --libs --cflags libcurl`
+CFLAGS+=${ARCH} -lrequest
 endif
 
 
@@ -32,6 +32,7 @@ install:
 	ifeq (${OS}, linux)
 	cp libyt.so ../../VTube/
 	endif
+
 	ifeq (${OS}, darwin)
 	cp libyt.dylib ../../VTube/
 	endif

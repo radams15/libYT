@@ -1,22 +1,4 @@
-//
-// Created by rhys on 13/02/2022.
-//
-
-#ifndef YOUTUBE_NET_H
-#define YOUTUBE_NET_H
-
-#ifdef __cplusplus
-extern "C"{
+#ifndef LIBYT_NET
+#define LIBYT_NET
+const char* net_get(const char* url, int use_proxy, const char* proxy_url);
 #endif
-
-typedef void (*stream_cb)(void*, long);
-
-const char* net_get(const char* url, int use_proxy, const char* proxy);
-
-int net_stream(const char* url, stream_cb stream_func, int use_proxy, const char* proxy);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif //YOUTUBE_NET_H

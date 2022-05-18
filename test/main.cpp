@@ -17,7 +17,7 @@ void vid_get(Video_t* vid, void* ptr){
 }
 
 int main() {
-    Config* conf = config_new("/home/rhys/.local/share/yt_saves.json", 1);
+    Config* conf = config_new("/home/rhys/.config/yt_saves.json", 0);
 
     config_get_vids(conf, vid_get, NULL);
 

@@ -8,5 +8,7 @@
 *.o
 *.DS_STORE
 *yt_saves.json
+*.json.min
 /build/
 /macbuild/
+/build_univ/

@@ -13,11 +13,13 @@ option(BUILD_YTPLAY "Build Example Application" ON)
 
 set(CMAKE_C_FLAGS "-std=c99")
 
-include_directories(${CURL_INCLUDE_DIRS} lib/cJSON include/)
+include_directories(${CURL_INCLUDE_DIRS} lib/cJSON include/ lib/librequest/include)
 
 set(YT_HEADER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include PARENT_SCOPE)
 
 set(YT_HEADERS include/Channel.h include/Config.h include/Video.h include/Net.h include/Videos.h)
+
+add_subdirectory(lib/librequest)
 
 add_library(yt SHARED src/main/Config.c src/main/Channel.c src/main/Video.c src/main/Util.c src/main/Net.c lib/cJSON/cJSON.c lib/cJSON/cJSON_Utils.c include/YT.h include/Videos.h)
 
@@ -26,7 +28,7 @@ add_executable(ytplay test/main.cpp)
 target_link_libraries(ytplay yt)
 endif()
 
-target_link_libraries(yt PRIVATE ${CURL_LIBRARIES})
+target_link_libraries(yt PRIVATE ${CURL_LIBRARIES} request)
 
 
 if(${APPLE})
