@@ -33,9 +33,11 @@ int main() {
     Config* conf = config_new("/home/rhys/.config/yt_saves.json.small", 0);
     conf->use_threading = 1;
 
-    Test* t = new Test;
+    Videos_t* vids = config_get_vids_list(conf);
 
-    config_get_vids(conf, vid_get, t);
+    for(int i=0 ; i<vids->length ; i++){
+        printf("%lu\n", vids->arry[i]->published);
+    }
 
     config_free(conf);
 

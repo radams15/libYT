@@ -5,6 +5,7 @@
 #include "Config.h"
 #include "Util.h"
 #include "Videos.h"
+#include "Sort.h"
 
 #include <cJSON.h>
 
@@ -166,6 +167,8 @@ struct Videos* config_get_vids_list(struct Config *conf) {
     vids->arry = malloc(1);
 
     config_get_vids(conf, config_vid_list_appender, (void*) vids);
+
+    quickSort(vids->arry, 0, vids->length-1);
 
     return vids;
 }
