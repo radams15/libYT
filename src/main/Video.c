@@ -56,7 +56,7 @@ const char* video_get_playable(struct Video* video, struct Config* conf) {
     printf("Get quality: %d\n", conf->quality);
 
     cJSON_ArrayForEach(stream, streams){
-        char* quality_str = cJSON_GetStringValue(cJSON_GetObjectItem(stream, "resolution"));
+        char* quality_str = strdup(cJSON_GetStringValue(cJSON_GetObjectItem(stream, "resolution")));
         quality_str[strlen(quality_str)-1] = 0;
         if(quality_str[strlen(quality_str)-1] == 'p') {
             quality_str[strlen(quality_str) - 1] = 0;
@@ -67,13 +67,13 @@ const char* video_get_playable(struct Video* video, struct Config* conf) {
         int quality = atoi(quality_str);
 
         if(quality == conf->quality){
-            return cJSON_GetStringValue(cJSON_GetObjectItem(stream, "url"));
+            return strdup(cJSON_GetStringValue(cJSON_GetObjectItem(stream, "url")));
         }
     }
 
     // not found exact match - get closest but smaller.
     cJSON_ArrayForEach(stream, streams){
-        char* quality_str = cJSON_GetStringValue(cJSON_GetObjectItem(stream, "resolution"));
+        char* quality_str = strdup(cJSON_GetStringValue(cJSON_GetObjectItem(stream, "resolution")));
         if(quality_str[strlen(quality_str)-1] == 'p') {
             quality_str[strlen(quality_str) - 1] = 0;
         }
@@ -84,7 +84,7 @@ const char* video_get_playable(struct Video* video, struct Config* conf) {
         free(quality_str);
 
         if(quality >= conf->quality){
-            return cJSON_GetStringValue(cJSON_GetObjectItem(stream, "url"));
+            return strdup(cJSON_GetStringValue(cJSON_GetObjectItem(stream, "url")));
         }
     }
 

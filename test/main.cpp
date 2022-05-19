@@ -2,6 +2,7 @@
 #include <Videos.h>
 
 #include <iostream>
+#include <cstdio>
 
 #ifdef __APPLE__
 #define COMMAND "open -a 'VLC'"
@@ -12,14 +13,29 @@
 #define COMMAND "echo "
 #endif
 
+
+class Test{
+public:
+    void GetVid(Video_t* vid){
+        std::cout << vid->channel_name << " -> " << vid->title << std::endl;
+    }
+};
+
 void vid_get(Video_t* vid, void* ptr){
-    std::cout << vid->channel_name << " -> " << vid->title << std::endl;
+    Test* test = (Test*) ptr;
+
+    test->GetVid(vid);
+
+    video_free(vid);
 }
 
 int main() {
-    Config* conf = config_new("/home/rhys/.config/yt_saves.json", 0);
+    Config* conf = config_new("/home/rhys/.config/yt_saves.json.small", 0);
+    conf->use_threading = 1;
 
-    config_get_vids(conf, vid_get, NULL);
+    Test* t = new Test;
+
+    config_get_vids(conf, vid_get, t);
 
     config_free(conf);
 

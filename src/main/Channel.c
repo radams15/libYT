@@ -10,6 +10,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <pthread.h>
+
+pthread_mutex_t mutex;
 
 struct Channel* channel_new(const char* id) {
     struct Channel* out = malloc(sizeof(struct Channel));
@@ -41,7 +44,7 @@ struct Channel* channel_new_from_name(const char *name, struct Config* conf) {
 
     cJSON* first_result = cJSON_GetArrayItem(json, 0);
 
-    const char* id = cJSON_GetStringValue(cJSON_GetObjectItem(first_result, "authorID"));
+    const char* id = strdup(cJSON_GetStringValue(cJSON_GetObjectItem(first_result, "authorID")));
 
     cJSON_free(json);
 
@@ -68,8 +71,9 @@ const char* channel_name(struct Channel* channel, struct Config* conf) {
         free(url);
 
         cJSON* json = cJSON_Parse(raw);
+        free(raw);
 
-        channel->name = cJSON_GetStringValue(cJSON_GetObjectItem(json, "author"));
+        channel->name = strdup(cJSON_GetStringValue(cJSON_GetObjectItem(json, "author")));
 
         cJSON_free(json);
     }
@@ -87,6 +91,7 @@ int channel_get_vids(struct Channel *channel, struct Config* conf, vid_cb callba
     free(url);
 
     cJSON* json = cJSON_Parse(raw);
+    free(raw);
 
     cJSON* videos = cJSON_GetObjectItem(json, "latestVideos");
 
@@ -97,11 +102,13 @@ int channel_get_vids(struct Channel *channel, struct Config* conf, vid_cb callba
         v->channel_name = strdup(channel_name(channel, conf));
         v->channel_id = strdup(channel->id);
 
-        v->title = cJSON_GetStringValue(cJSON_GetObjectItem(video, "title"));
-        v->id = cJSON_GetStringValue(cJSON_GetObjectItem(video, "videoID"));
+        v->title = strdup(cJSON_GetStringValue(cJSON_GetObjectItem(video, "title")));
+        v->id = strdup(cJSON_GetStringValue(cJSON_GetObjectItem(video, "videoID")));
         v->published = cJSON_GetNumberValue(cJSON_GetObjectItem(video, "published"));
 
+        pthread_mutex_lock(&mutex);
         callback(v, data);
+        pthread_mutex_unlock(&mutex);
     }
 
     cJSON_free(json);

@@ -19,6 +19,7 @@ void config_load(struct Config* conf){
     }
 	
     cJSON* json = cJSON_Parse(data);
+    free((void*) data);
 
     conf->quality = cJSON_GetObjectItem(json, "quality")->valueint;
 
@@ -85,6 +86,7 @@ void config_free(struct Config *conf) {
         free(conf->subs->arry);
     }
     free(conf->subs);
+    free(conf);
 }
 
 void config_subs_add(struct Config* conf, struct Channel* channel) {
@@ -114,6 +116,7 @@ void* get_vid(void* ptr){
 int config_get_vids(struct Config *conf, vid_cb callback, void *data) {
     if(conf->use_threading) {
         pthread_t *threads = malloc(conf->subs->length * sizeof(pthread_t));
+        struct ThreadData * *thread_datas = malloc(conf->subs->length * sizeof(struct ThreadData *));
 
         for (int i = 0; i < conf->subs->length; i++) {
             struct Channel *c = conf->subs->arry[i];
@@ -125,13 +128,18 @@ int config_get_vids(struct Config *conf, vid_cb callback, void *data) {
             thread_data->callback = callback;
             thread_data->data = data;
 
+            thread_datas[i] = thread_data;
+
             pthread_create(&threads[i], NULL, get_vid, thread_data);
         }
 
         for (int i = 0; i < conf->subs->length; i++) {
             void *status;
             pthread_join(threads[i], &status);
+            free((void*)thread_datas[i]);
         }
+        free((void*) thread_datas);
+        free((void*) threads);
     }else{
         for (int i = 0; i < conf->subs->length; i++) {
             struct Channel *c = conf->subs->arry[i];
