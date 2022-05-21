@@ -21,6 +21,8 @@ struct Channel* channel_new(const char* id) {
 
     out->id = strdup(id);
     out->name = "";
+    out->sub_count = 0;
+    out->video_count = 0;
 
     return out;
 }
@@ -119,14 +121,50 @@ int channel_get_vids(struct Channel *channel, struct Config* conf, vid_cb callba
     return 0;
 }
 
-Videos_t *channel_get_vids_list(Channel_t *channel, Config_t *conf) {
-    Videos_t* vids = malloc(sizeof(struct Videos));
+List_t *channel_get_vids_list(Channel_t *channel, Config_t *conf) {
+    List_t* vids = malloc(sizeof(struct List));
     vids->length = 0;
     vids->arry = malloc(1);
 
-    channel_get_vids(channel, conf, config_vid_list_appender, (void*) vids);
+    channel_get_vids(channel, conf, config_video_list_appender, (void *) vids);
 
     sort_vids(vids->arry, 0, vids->length - 1);
 
     return vids;
+}
+
+void channel_search(Config_t *conf, const char *query, int page, channel_cb callback, void *data) {
+    char* url = calloc(strlen(conf->invidious_inst) + strlen(query) + 32, sizeof(char));
+
+    sprintf(url, "%s/api/v1/search?q=%s&type=channel&page=%d", conf->invidious_inst, query, page);
+
+    const char* raw = net_get(url, conf->use_proxy, conf->proxy_url);
+
+    free(url);
+
+    cJSON* json = cJSON_Parse(raw);
+    free(raw);
+
+    cJSON* channel;
+    cJSON_ArrayForEach(channel, json){
+        struct Channel* c = channel_new(cJSON_GetStringValue(cJSON_GetObjectItem(channel, "authorId")));
+
+        c->name = strdup(cJSON_GetStringValue(cJSON_GetObjectItem(channel, "author")));
+        c->sub_count = (long) cJSON_GetNumberValue(cJSON_GetObjectItem(channel, "subCount"));
+        c->video_count = (long) cJSON_GetNumberValue(cJSON_GetObjectItem(channel, "videoCount"));
+
+        callback(c, data);
+    }
+
+    cJSON_free(json);
+}
+
+List_t* channel_search_list(Config_t *conf, const char *query, int page) {
+    List_t* channels = malloc(sizeof(struct List));
+    channels->length = 0;
+    channels->arry = malloc(1);
+
+    channel_search(conf, query, page, config_channel_list_appender, (void *) channels);
+
+    return channels;
 }

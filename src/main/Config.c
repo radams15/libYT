@@ -4,7 +4,7 @@
 
 #include "Config.h"
 #include "Util.h"
-#include "Videos.h"
+#include "List.h"
 #include "Sort.h"
 
 #include <cJSON.h>
@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <pthread.h>
+#include <string.h>
 
 void config_load(struct Config* conf){
     const char* data = read_file(conf->fname);
@@ -45,7 +46,7 @@ void config_save(struct Config* conf){
 
     cJSON* subs = cJSON_AddArrayToObject(json, "subs");
     for(int i=0 ; i<conf->subs->length ; i++) {
-        cJSON_AddItemToArray(subs, cJSON_CreateString(conf->subs->arry[i]->id));
+        cJSON_AddItemToArray(subs, cJSON_CreateString(((Channel_t*)conf->subs->arry[i])->id));
     }
 
     FILE *out;
@@ -64,7 +65,7 @@ struct Config* config_new(const char* fname, int use_proxy) {
     out->fname = strdup(fname);
     out->invidious_inst = strdup("http://vid.puffyan.us"); //TODO load from fname.
     out->quality = 480;
-    out->subs = malloc(sizeof(struct Subs));
+    out->subs = malloc(sizeof(List_t));
     out->use_threading = 1;
 
     out->subs->arry = malloc(1);
@@ -154,30 +155,85 @@ int config_get_vids(struct Config *conf, vid_cb callback, void *data) {
 
 
 
-struct Videos* config_get_vids_list(struct Config *conf) {
-    struct Videos* vids = malloc(sizeof(struct Videos));
+struct List* config_get_vids_list(struct Config *conf) {
+    struct List* vids = malloc(sizeof(struct List));
     vids->length = 0;
     vids->arry = malloc(1);
 
-    config_get_vids(conf, config_vid_list_appender, (void*) vids);
+    config_get_vids(conf, config_video_list_appender, (void *) vids);
 
-    sort_vids(vids->arry, 0, vids->length - 1);
+    sort_vids((Video_t**) vids->arry, 0, vids->length - 1);
 
     return vids;
 }
 
-struct Video* videos_get(struct Videos* vids, int index){
+void config_video_search(Config_t *conf, const char *query, int page, vid_cb callback, void *data) {
+    char* url = calloc(strlen(conf->invidious_inst) + strlen(query) + 32, sizeof(char));
+
+    sprintf(url, "%s/api/v1/search?q=%s&type=video&page=%d", conf->invidious_inst, query, page);
+
+    const char* raw = net_get(url, conf->use_proxy, conf->proxy_url);
+
+    free(url);
+
+    cJSON* json = cJSON_Parse(raw);
+    free(raw);
+
+    cJSON* video;
+    cJSON_ArrayForEach(video, json){
+        struct Video* v = video_new();
+
+        v->channel_name = strdup(cJSON_GetStringValue(cJSON_GetObjectItem(video, "author")));
+        v->channel_id = strdup(cJSON_GetStringValue(cJSON_GetObjectItem(video, "authorId")));
+
+        v->title = strdup(cJSON_GetStringValue(cJSON_GetObjectItem(video, "title")));
+        v->id = strdup(cJSON_GetStringValue(cJSON_GetObjectItem(video, "videoID")));
+        v->published = cJSON_GetNumberValue(cJSON_GetObjectItem(video, "published"));
+
+        callback(v, data);
+    }
+
+    cJSON_free(json);
+}
+
+List_t *config_video_search_list(Config_t *conf, const char *query, int page) {
+    struct List* vids = malloc(sizeof(struct List));
+    vids->length = 0;
+    vids->arry = malloc(1);
+
+    config_video_search(conf, query, page, config_video_list_appender, (void *) vids);
+
+    return vids;
+}
+
+struct Video* videos_get(struct List* vids, int index){
     if(index >=0 && index < vids->length){
-        return vids->arry[index];
+        return (Video_t*) vids->arry[index];
     }
 
     return NULL;
 }
 
-void videos_free(struct Videos* vids) {
+struct Channel* channels_get(struct List* channels, int index){
+    if(index >=0 && index < channels->length){
+        return (Channel_t*) channels->arry[index];
+    }
+
+    return NULL;
+}
+
+void videos_free(struct List* vids) {
     for(int i=0 ; i<vids->length ; i++){
         video_free(vids->arry[i]);
     }
 
     free(vids);
+}
+
+void channels_free(List_t* channels){
+    for(int i=0 ; i<channels->length ; i++){
+        channel_free(channels->arry[i]);
+    }
+
+    free(channels);
 }

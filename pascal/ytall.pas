@@ -63,13 +63,13 @@ interface
   PVideo  = ^Video;
   Video_t = Video;
   PVideo_t  = ^Video_t;
-  Videos = record
+  List = record
         arry : ^PVideo;
         length : longint;
       end;
-  PVideos  = ^Videos;
-  Videos_t = Videos;
-  PVideos_t  = ^Videos_t;
+  PVideos  = ^List;
+  List_t = List;
+  PVideos_t  = ^List_t;
 {$IFDEF FPC}
 {$PACKRECORDS C}
 {$ENDIF}
@@ -95,9 +95,9 @@ interface
   procedure video_free(var video:Video_t);cdecl;external External_library name 'video_free';
 
 
-  procedure videos_free(var vids:Videos_t);cdecl;external External_library name 'videos_free';
+  procedure videos_free(var vids:List_t);cdecl;external External_library name 'videos_free';
 
-  function videos_get(var vids:Videos_t; index:longint):PVideo_t;cdecl;external External_library name 'videos_get';
+  function videos_get(var vids:List_t; index:longint):PVideo_t;cdecl;external External_library name 'videos_get';
 
 
   type
