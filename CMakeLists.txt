@@ -22,7 +22,7 @@ set(YT_HEADERS include/Channel.h include/Config.h include/Video.h include/Net.h 
 
 add_subdirectory(lib/librequest)
 
-add_library(yt SHARED src/main/Config.c src/main/Channel.c src/main/Video.c src/main/Util.c src/main/Net.c lib/cJSON/cJSON.c lib/cJSON/cJSON_Utils.c include/YT.h include/List.h src/main/Sort.c src/main/Sort.h)
+add_library(yt STATIC src/main/Config.c src/main/Channel.c src/main/Video.c src/main/Util.c src/main/Net.c lib/cJSON/cJSON.c lib/cJSON/cJSON_Utils.c include/YT.h include/List.h src/main/Sort.c src/main/Sort.h)
 
 if(BUILD_YTPLAY)
 add_executable(ytplay test/main.cpp)
