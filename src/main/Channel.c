@@ -128,7 +128,8 @@ List_t *channel_get_vids_list(Channel_t *channel, Config_t *conf) {
 
     channel_get_vids(channel, conf, config_video_list_appender, (void *) vids);
 
-    sort_vids(vids->arry, 0, vids->length - 1);
+    sort_vids(vids->arry, vids->length, 0, vids->length - 1);
+    reverse_vids(vids->arry, vids->length);
 
     return vids;
 }

@@ -7,6 +7,7 @@
 
 #include <Video.h>
 
-void sort_vids(Video_t** intArray, int left, int right);
+void sort_vids(Video_t** arry, int length, int left, int right);
+void reverse_vids(Video_t** arry, int length);
 
 #endif //YT_SORT_H

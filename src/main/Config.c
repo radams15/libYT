@@ -162,7 +162,8 @@ struct List* config_get_vids_list(struct Config *conf) {
 
     config_get_vids(conf, config_video_list_appender, (void *) vids);
 
-    sort_vids((Video_t**) vids->arry, 0, vids->length - 1);
+    sort_vids((Video_t**) vids->arry, vids->length, 0, vids->length - 1);
+    reverse_vids(vids->arry, vids->length);
 
     return vids;
 }

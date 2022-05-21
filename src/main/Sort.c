@@ -3,7 +3,6 @@
 //
 
 #include "Sort.h"
-#include <stdio.h>
 
 void swap(Video_t** intArray, int num1, int num2) {
     Video_t* temp = intArray[num1];
@@ -11,7 +10,7 @@ void swap(Video_t** intArray, int num1, int num2) {
     intArray[num2] = temp;
 }
 
-int partition(Video_t** intArray, int left, int right, int pivot) {
+int partition(Video_t** intArray, int left, int right, long pivot) {
     int leftPointer = left -1;
     int rightPointer = right;
 
@@ -35,13 +34,26 @@ int partition(Video_t** intArray, int left, int right, int pivot) {
     return leftPointer;
 }
 
-void sort_vids(Video_t** intArray, int left, int right) {
+void reverse_vids(Video_t** arry, int length){
+    int opposite;
+    Video_t* temp;
+
+    for(int i=0 ; i<length ; i++){
+        opposite = length-i-1;
+
+        //printf("Swap %d with %d\n", i, opposite);
+
+        swap(arry, i, opposite);
+    }
+}
+
+void sort_vids(Video_t** arry, int length, int left, int right) {
     if(right-left <= 0) {
         return;
     } else {
-        long pivot = intArray[right]->published;
-        int partitionPoint = partition(intArray, left, right, pivot);
-        sort_vids(intArray, left, partitionPoint - 1);
-        sort_vids(intArray, partitionPoint + 1, right);
+        long pivot = arry[right]->published;
+        int partitionPoint = partition(arry, left, right, pivot);
+        sort_vids(arry, length, left, partitionPoint - 1);
+        sort_vids(arry, length, partitionPoint + 1, right);
     }
 }

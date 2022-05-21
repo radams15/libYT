@@ -5,6 +5,7 @@ set(CMAKE_C_STANDARD 99)
 set(CMAKE_CXX_STANDARD 98)
 
 include(GNUInstallDirs)
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(CURL REQUIRED libcurl)
