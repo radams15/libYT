@@ -23,6 +23,7 @@ Channel_t* channel_new_from_name(const char* name, Config_t* conf);
 const char* channel_name(Channel_t* channel, Config_t* conf);
 
 int channel_get_vids(Channel_t* channel, Config_t* conf, vid_cb callback, void* data);
+Videos_t* channel_get_vids_list(Channel_t* channel, Config_t* conf);
 
 void channel_free(Channel_t* channel);
 

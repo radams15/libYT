@@ -7,6 +7,6 @@
 
 #include <Video.h>
 
-void quickSort(Video_t** intArray, int left, int right);
+void sort_vids(Video_t** intArray, int left, int right);
 
 #endif //YT_SORT_H

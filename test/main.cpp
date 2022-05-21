@@ -33,10 +33,12 @@ int main() {
     Config* conf = config_new("/home/rhys/.config/yt_saves.json.small", 0);
     conf->use_threading = 1;
 
-    Videos_t* vids = config_get_vids_list(conf);
+    Channel_t* channel = channel_new("UC0e3QhIYukixgh5VVpKHH9Q");
+
+    Videos_t* vids = channel_get_vids_list(channel, conf);
 
     for(int i=0 ; i<vids->length ; i++){
-        printf("%lu\n", vids->arry[i]->published);
+        printf("%s\n", vids->arry[i]->title);
     }
 
     config_free(conf);

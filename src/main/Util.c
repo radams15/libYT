@@ -3,6 +3,7 @@
 //
 
 #include "Util.h"
+#include "Videos.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -16,6 +17,15 @@ char* strdup(const char *in) {
     strcpy(buf, in);
 
     return buf;
+}
+
+void config_vid_list_appender(Video_t* vid, void* ptr){
+    Videos_t* vids = ptr;
+
+    vids->length++;
+    vids->arry = realloc(vids->arry, vids->length * sizeof(struct Video*));
+
+    vids->arry[vids->length - 1] = vid;
 }
 
 const char* read_file(const char* fname){

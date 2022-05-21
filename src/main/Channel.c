@@ -6,6 +6,8 @@
 #include "Net.h"
 #include "Config.h"
 #include "cJSON.h"
+#include "Util.h"
+#include "Sort.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -115,4 +117,16 @@ int channel_get_vids(struct Channel *channel, struct Config* conf, vid_cb callba
     cJSON_free(videos);
 
     return 0;
+}
+
+Videos_t *channel_get_vids_list(Channel_t *channel, Config_t *conf) {
+    Videos_t* vids = malloc(sizeof(struct Videos));
+    vids->length = 0;
+    vids->arry = malloc(1);
+
+    channel_get_vids(channel, conf, config_vid_list_appender, (void*) vids);
+
+    sort_vids(vids->arry, 0, vids->length - 1);
+
+    return vids;
 }

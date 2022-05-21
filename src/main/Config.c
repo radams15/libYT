@@ -71,7 +71,7 @@ struct Config* config_new(const char* fname, int use_proxy) {
     out->subs->length = 0;
 
     out->use_proxy = use_proxy;
-    out->proxy_url = strdup("http://therhys.co.uk/yt/proxy.php?url=");
+    out->proxy_url = "";
 
     config_load(out);
 
@@ -152,14 +152,7 @@ int config_get_vids(struct Config *conf, vid_cb callback, void *data) {
     return EXIT_SUCCESS;
 }
 
-void config_vid_list_appender(struct Video* vid, void* ptr){
-    struct Videos* vids = ptr;
 
-    vids->length++;
-    vids->arry = realloc(vids->arry, vids->length * sizeof(struct Video*));
-
-    vids->arry[vids->length - 1] = vid;
-}
 
 struct Videos* config_get_vids_list(struct Config *conf) {
     struct Videos* vids = malloc(sizeof(struct Videos));
@@ -168,7 +161,7 @@ struct Videos* config_get_vids_list(struct Config *conf) {
 
     config_get_vids(conf, config_vid_list_appender, (void*) vids);
 
-    quickSort(vids->arry, 0, vids->length-1);
+    sort_vids(vids->arry, 0, vids->length - 1);
 
     return vids;
 }

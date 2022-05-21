@@ -45,15 +45,11 @@ const char* video_get_playable(struct Video* video, struct Config* conf) {
 
     free(url);
 
-    printf("Raw: %s\n", raw);
-
     cJSON* json = cJSON_Parse(raw);
 
     cJSON* streams = cJSON_GetObjectItem(json, "formatStreams");
 
     cJSON* stream;
-
-    printf("Get quality: %d\n", conf->quality);
 
     cJSON_ArrayForEach(stream, streams){
         char* quality_str = strdup(cJSON_GetStringValue(cJSON_GetObjectItem(stream, "resolution")));
