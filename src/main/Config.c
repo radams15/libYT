@@ -25,6 +25,12 @@ void config_load(struct Config* conf){
 
     conf->quality = cJSON_GetObjectItem(json, "quality")->valueint;
 
+    const char* inst = cJSON_GetStringValue(cJSON_GetObjectItem(json, "instance"));
+    if(inst != NULL){
+        free((void*)conf->invidious_inst);
+        conf->invidious_inst = strdup(inst);
+    }
+
     cJSON* subs = cJSON_GetObjectItem(json, "subs");
 
     cJSON* sub;
@@ -43,6 +49,7 @@ void config_save(struct Config* conf){
     cJSON* json = cJSON_CreateObject();
 
     cJSON_AddNumberToObject(json, "quality", conf->quality);
+    cJSON_AddStringToObject(json, "instance", conf->invidious_inst);
 
     cJSON* subs = cJSON_AddArrayToObject(json, "subs");
     for(int i=0 ; i<conf->subs->length ; i++) {
@@ -63,7 +70,7 @@ struct Config* config_new(const char* fname, int use_proxy) {
     struct Config* out = malloc(sizeof(struct Config));
 
     out->fname = strdup(fname);
-    out->invidious_inst = strdup("http://vid.puffyan.us"); //TODO load from fname.
+    out->invidious_inst = strdup("http://vid.puffyan.us");
     out->quality = 480;
     out->subs = malloc(sizeof(List_t));
     out->use_threading = 1;

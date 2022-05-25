@@ -33,10 +33,16 @@ struct Channel* channel_new_from_name(const char *name, struct Config* conf) {
     sprintf(url, "%s/api/v1/search?type=channel&q=%s", conf->invidious_inst, name);
 
     const char* raw = net_get(url, conf->use_proxy, conf->proxy_url);
-
     free(url);
 
     cJSON* json = cJSON_Parse(raw);
+
+    if(json == NULL){
+        fprintf(stderr, "Internal libyt error - NULL returned from invidious: %s\n", raw);
+        return NULL;
+    }
+
+    free(raw);
 
     if(cJSON_GetArraySize(json) == 0){
         fprintf(stderr, "Cannot find valid channel name for: %s\n", name);
@@ -75,6 +81,12 @@ const char* channel_name(struct Channel* channel, struct Config* conf) {
         free(url);
 
         cJSON* json = cJSON_Parse(raw);
+
+        if(json == NULL){
+            fprintf(stderr, "Internal libyt error - NULL returned from invidious: %s\n", raw);
+            return "(NULL)";
+        }
+
         free(raw);
 
         channel->name = strdup(cJSON_GetStringValue(cJSON_GetObjectItem(json, "author")));
@@ -95,6 +107,12 @@ int channel_get_vids(struct Channel *channel, struct Config* conf, vid_cb callba
     free(url);
 
     cJSON* json = cJSON_Parse(raw);
+
+    if(json == NULL){
+        fprintf(stderr, "Internal libyt error - NULL returned from invidious: %s\n", raw);
+        return "(NULL)";
+    }
+
     free(raw);
 
     cJSON* videos = cJSON_GetObjectItem(json, "latestVideos");
@@ -144,6 +162,12 @@ void channel_search(Config_t *conf, const char *query, int page, channel_cb call
     free(url);
 
     cJSON* json = cJSON_Parse(raw);
+
+    if(json == NULL){
+        fprintf(stderr, "Internal libyt error - NULL returned from invidious: %s\n", raw);
+        return;
+    }
+
     free(raw);
 
     cJSON* channel;

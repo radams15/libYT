@@ -4,14 +4,6 @@
 #include <iostream>
 #include <cstdio>
 
-#ifdef __APPLE__
-#define COMMAND "open -a 'VLC'"
-#elif defined(__unix__)
-#define COMMAND "flatpak run com.github.rafostar.Clapper"
-#else
-#warning "Unknown OS! Will not be able to autoplay"
-#define COMMAND "echo "
-#endif
 
 void vid_get(Video_t* vid, void* ptr){
 
@@ -45,6 +37,7 @@ int main() {
     }*/
 
 
+    config_save(conf);
     config_free(conf);
 
     return 0;

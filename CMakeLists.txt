@@ -29,7 +29,7 @@ add_executable(ytplay test/main.cpp)
 target_link_libraries(ytplay yt)
 endif()
 
-target_link_libraries(yt PRIVATE ${CURL_LIBRARIES} request)
+target_link_libraries(yt PRIVATE ${CURL_LIBRARIES} request pthread)
 
 
 if(${APPLE})
