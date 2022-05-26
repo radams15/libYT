@@ -24,10 +24,8 @@ int main() {
     Config* conf = config_new("/home/rhys/.config/yt_saves.json.small", 0);
     conf->use_threading = 1;
 
-    List_t* vids = config_get_vids_list(conf);
-
-    for(int i=0 ; i<vids->length ; i++){
-        printf("%s\n", videos_get(vids, i)->title);
+    for(int i=0 ; i<conf->subs->length ; i++){
+        printf("%s\n", channel_name(channels_get(conf->subs, i), conf));
     }
 
     /*List_t* channels = channel_search_list(conf, "techmoan", 1);

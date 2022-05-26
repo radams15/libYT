@@ -30,6 +30,7 @@ typedef struct Config{
 Config_t* config_new(const char* fname, int use_proxy);
 
 void config_subs_add(Config_t* conf, Channel_t* channel);
+void config_subs_rm(Config_t* conf, Channel_t* channel);
 
 void config_save(Config_t* conf);
 

@@ -53,6 +53,9 @@ void config_save(struct Config* conf){
 
     cJSON* subs = cJSON_AddArrayToObject(json, "subs");
     for(int i=0 ; i<conf->subs->length ; i++) {
+        if(conf->subs->arry[i] == NULL){
+            continue;
+        }
         cJSON_AddItemToArray(subs, cJSON_CreateString(((Channel_t*)conf->subs->arry[i])->id));
     }
 
@@ -90,6 +93,9 @@ void config_free(struct Config *conf) {
     free((void*) conf->fname);
     if(conf->subs->length > 0) {
         for(int i=0 ; i<conf->subs->length ; i++){
+            if(conf->subs->arry[i] == NULL){
+                continue;
+            }
             channel_free(conf->subs->arry[i]);
         }
         free(conf->subs->arry);
@@ -129,6 +135,9 @@ int config_get_vids(struct Config *conf, vid_cb callback, void *data) {
 
         for (int i = 0; i < conf->subs->length; i++) {
             struct Channel *c = conf->subs->arry[i];
+            if(c == NULL){
+                continue;
+            }
 
             struct ThreadData *thread_data = malloc(sizeof(struct ThreadData));
 
@@ -212,6 +221,21 @@ List_t *config_video_search_list(Config_t *conf, const char *query, int page) {
     config_video_search(conf, query, page, config_video_list_appender, (void *) vids);
 
     return vids;
+}
+
+void config_subs_rm(Config_t *conf, Channel_t *channel) {
+    for(int i=0 ; i<conf->subs->length ; i++){
+        Channel_t* c = channels_get(conf->subs, i);
+
+        if(c == NULL){
+            continue;
+        }
+
+        if(strcmp(c->id, channel->id) == 0){
+            channel_free(c);
+            conf->subs->arry[i] = NULL;
+        }
+    }
 }
 
 struct Video* videos_get(struct List* vids, int index){
