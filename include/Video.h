@@ -14,6 +14,7 @@ typedef struct Video {
     char* title;
     char* channel_name;
     char* channel_id;
+    char* thumbnail;
     long published;
 } Video_t;
 

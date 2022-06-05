@@ -18,6 +18,7 @@ void video_free(struct Video *video) {
     FREE_NOTNULL(video->id)
     FREE_NOTNULL(video->title)
     FREE_NOTNULL(video->channel_name)
+    FREE_NOTNULL(video->thumbnail)
     FREE_NOTNULL(video->channel_id)
 
     free(video);
@@ -30,6 +31,7 @@ struct Video* video_new() {
     out->title = "";
     out->channel_name = "";
     out->channel_id = "";
+    out->thumbnail = "";
 
     return out;
 }

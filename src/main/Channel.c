@@ -97,6 +97,22 @@ const char* channel_name(struct Channel* channel, struct Config* conf) {
     return (const char*) channel->name;
 }
 
+const char* vid_get_thumbnail(void* thumbnails){
+    cJSON* thumb;
+    cJSON* thumbs = thumbnails;
+
+    cJSON_ArrayForEach(thumb, thumbs){
+        int width = cJSON_GetNumberValue(cJSON_GetObjectItem(thumb, "width"));
+        char* url = cJSON_GetStringValue(cJSON_GetObjectItem(thumb, "url"));
+
+        if(width <= 240 && strcmp(url, "") != 0){
+            return strdup(url);
+        }
+
+        free(url);
+    }
+}
+
 int channel_get_vids(struct Channel *channel, struct Config* conf, vid_cb callback, void* data) {
     char* url = calloc(strlen(conf->invidious_inst) + strlen(channel->id) + 32, sizeof(char));
 
@@ -127,6 +143,7 @@ int channel_get_vids(struct Channel *channel, struct Config* conf, vid_cb callba
         v->title = strdup(cJSON_GetStringValue(cJSON_GetObjectItem(video, "title")));
         v->id = strdup(cJSON_GetStringValue(cJSON_GetObjectItem(video, "videoID")));
         v->published = cJSON_GetNumberValue(cJSON_GetObjectItem(video, "published"));
+        v->thumbnail = vid_get_thumbnail(cJSON_GetObjectItem(video, "videoThumbnails"));
 
         pthread_mutex_lock(&mutex);
         callback(v, data);

@@ -27,6 +27,8 @@ typedef void (*channel_cb)(Channel_t*, void*);
 
 Channel_t* channel_new(const char* id);
 
+const char* vid_get_thumbnail(void* thumbnails);
+
 Channel_t* channel_new_from_name(const char* name, Config_t* conf);
 
 void channel_search(Config_t* conf, const char* query, int page, channel_cb callback, void* data);

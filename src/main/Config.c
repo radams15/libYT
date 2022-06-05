@@ -210,6 +210,7 @@ void config_video_search(Config_t *conf, const char *query, int page, vid_cb cal
         v->title = strdup(cJSON_GetStringValue(cJSON_GetObjectItem(video, "title")));
         v->id = strdup(cJSON_GetStringValue(cJSON_GetObjectItem(video, "videoID")));
         v->published = cJSON_GetNumberValue(cJSON_GetObjectItem(video, "published"));
+        v->thumbnail = vid_get_thumbnail(cJSON_GetObjectItem(video, "videoThumbnails"));
 
         callback(v, data);
     }
@@ -248,6 +249,10 @@ struct Video* videos_get(struct List* vids, int index){
     }
 
     return NULL;
+}
+
+int list_length(List_t* vids) {
+	return vids->length;
 }
 
 struct Channel* channels_get(struct List* channels, int index){

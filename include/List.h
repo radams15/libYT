@@ -18,6 +18,7 @@ typedef struct List {
 void videos_free(List_t* vids);
 void channels_free(List_t* channels);
 
+int list_length(List_t* vids);
 struct Video* videos_get(List_t* vids, int index);
 struct Channel* channels_get(List_t* vids, int index);
 
