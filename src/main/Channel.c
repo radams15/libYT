@@ -14,7 +14,7 @@
 #include <string.h>
 #include <pthread.h>
 
-pthread_mutex_t mutex;
+pthread_mutex_t mutex = {};
 
 struct Channel* channel_new(const char* id) {
     struct Channel* out = malloc(sizeof(struct Channel));

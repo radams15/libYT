@@ -1,9 +1,9 @@
 
-OS=linux
+OS=darwin
 
 ifeq "${OS}" 'darwin' 
 CC=gcc
-CFLAGS='--std=c99'
+CFLAGS=--std=c99
 ARCH ?= -arch ppc
 TARGET ?= -mmacosx-version-min=10.4 -isysroot /Developer/SDKs/MacOSX10.4u.sdk
 endif
@@ -38,7 +38,10 @@ build/libyt.so:
 
 build/libyt.dylib:
 	mkdir -p build
-	${CC} ${CFLAGS} -fPIC ${ARCH} ${TARGET} -dynamiclib ${SRCS} -o build/libyt.dylib -Ilib/librequest/include -Ilib/cJSON -Iinclude `pkg-config --libs --cflags libcurl`
+	${CC} ${CFLAGS} -fPIC ${ARCH} ${TARGET} -dynamiclib ${SRCS} ${B64_SRC} ${REQ_SRC} ${CJSON_SRC} -o build/libyt.dylib -Ilib/librequest/include -Ilib/cJSON -Iinclude `pkg-config --libs --cflags libcurl`
+
+build/test:
+	        ${CC} ${CFLAGS} ${ARCH} ${TARGET} src/test/test.cpp  ${SRCS} ${B64_SRC} ${REQ_SRC} ${CJSON_SRC} -o build/libyt.dylib -Ilib/librequest/include -Ilib/cJSON -Iinclude `pkg-config --libs --cflags libcurl`
 
 clean:
 	rm -rf build

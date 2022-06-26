@@ -9,4 +9,4 @@ copy:
 	cp ../ffi/libyt.dylib .
 
 comp:
-	${CXX}  main.cpp -I../include/ -L. -o main -lyt ${ARCH} -std=c++98
+	${CXX}  main.cpp -I../include/ -L/Users/rhys/lib -o main -lyt ${ARCH} -std=c++98

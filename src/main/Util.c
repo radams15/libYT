@@ -9,7 +9,7 @@
 #include <string.h>
 #include <stdio.h>
 
-char* strdup(const char *in) {
+/*char* strdup(const char *in) {
     unsigned int newlen = ((strlen(in))*sizeof(const char))+5;
 
     char* buf = malloc(newlen);
@@ -17,7 +17,7 @@ char* strdup(const char *in) {
     strcpy(buf, in);
 
     return buf;
-}
+}*/
 
 void config_video_list_appender(Video_t* vid, void* ptr){
     List_t* vids = ptr;

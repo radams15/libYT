@@ -31,12 +31,20 @@ void config_load(struct Config* conf){
         conf->invidious_inst = strdup(inst);
     }
 
-    cJSON* subs = cJSON_GetObjectItem(json, "subs");
+    cJSON* subs = cJSON_GetObjectItem(json, "subscriptions");
 
     cJSON* sub;
+    cJSON* sub_id;
+    cJSON* sub_name;
     cJSON_ArrayForEach(sub, subs){
-        if(cJSON_IsString(sub)) {
-            struct Channel* c = channel_new(sub->valuestring);
+        sub_id = cJSON_GetObjectItem(sub, "id");
+        sub_name = cJSON_GetObjectItem(sub, "name");
+        if(cJSON_IsString(sub_id)) {
+            struct Channel* c = channel_new(sub_id->valuestring);
+
+            if(cJSON_IsString(sub_name)){
+                c->name = strdup(sub_name->valuestring);
+            }
 
             config_subs_add(conf, c);
         }
@@ -51,12 +59,17 @@ void config_save(struct Config* conf){
     cJSON_AddNumberToObject(json, "quality", conf->quality);
     cJSON_AddStringToObject(json, "instance", conf->invidious_inst);
 
-    cJSON* subs = cJSON_AddArrayToObject(json, "subs");
+    cJSON* subs = cJSON_AddArrayToObject(json, "subscriptions");
     for(int i=0 ; i<conf->subs->length ; i++) {
         if(conf->subs->arry[i] == NULL){
             continue;
         }
-        cJSON_AddItemToArray(subs, cJSON_CreateString(((Channel_t*)conf->subs->arry[i])->id));
+
+        cJSON* sub = cJSON_CreateObject();
+        cJSON_AddStringToObject(sub, "id", channels_get(conf->subs, i)->id);
+        cJSON_AddStringToObject(sub, "name", channel_name(channels_get(conf->subs, i), conf));
+
+        cJSON_AddItemToArray(subs, sub);
     }
 
     FILE *out;
@@ -183,7 +196,7 @@ struct List* config_get_vids_list(struct Config *conf) {
     config_get_vids(conf, config_video_list_appender, (void *) vids);
 
     sort_vids((Video_t**) vids->arry, vids->length, 0, vids->length - 1);
-    reverse_vids(vids->arry, vids->length);
+    reverse_vids((Video_t**) vids->arry, vids->length);
 
     return vids;
 }
