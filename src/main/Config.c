@@ -16,7 +16,7 @@
 
 void config_load(struct Config* conf){
     const char* data = read_file(conf->fname);
-    if(data == NULL){
+    if(data == NULL || strcmp(data, "") == 0){
         return;
     }
 	

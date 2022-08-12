@@ -7,7 +7,7 @@
 
 void vid_get(Video_t* vid, void* ptr){
 
-    std::cout << vid->title << " -> " << vid->thumbnail << std::endl;
+    std::cout << vid->title << " -> " << vid->channel_name << std::endl;
 
     video_free(vid);
 }
@@ -22,15 +22,9 @@ void channel_get(Channel_t* channel, void* ptr){
 
 int main() {
     Config* conf = config_new("/Users/rhys/Library/yt_saves.json", 0);
+    conf->use_threading = 1;
 
-    for(int i=0 ; i<conf->subs->length ; i++){
-        std::cout << channels_get(conf->subs, i)->name << std::endl;
-    }
-
-    //conf->use_threading = 1;
-
-    //config_get_vids(conf, vid_get, NULL);
-
+    config_get_vids(conf, vid_get, NULL);
 
     config_save(conf);
     config_free(conf);
