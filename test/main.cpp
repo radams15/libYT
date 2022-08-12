@@ -1,9 +1,7 @@
 #include <Config.h>
-#include <List.h>
 
 #include <iostream>
 #include <cstdio>
-
 
 void vid_get(Video_t* vid, void* ptr){
 
@@ -13,15 +11,13 @@ void vid_get(Video_t* vid, void* ptr){
 }
 
 void channel_get(Channel_t* channel, void* ptr){
-
     std::cout << channel->name << " -> " << channel->sub_count << std::endl;
 
     channel_free(channel);
 }
 
-
 int main() {
-    Config* conf = config_new("/Users/rhys/Library/yt_saves.json", 0);
+    Config* conf = config_new("/home/rhys/.config/yt_saves.json", 0);
     conf->use_threading = 1;
 
     config_get_vids(conf, vid_get, NULL);
