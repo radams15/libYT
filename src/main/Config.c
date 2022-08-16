@@ -15,6 +15,10 @@
 #include <string.h>
 
 void config_load(struct Config* conf){
+    if(!path_exists(conf->fname)){
+        return;
+    }
+
     const char* data = read_file(conf->fname);
     if(data == NULL || strcmp(data, "") == 0){
         return;

@@ -12,5 +12,6 @@
 const char* read_file(const char* fname);
 void config_video_list_appender(Video_t* vid, void* ptr);
 void config_channel_list_appender(Channel_t* vid, void* ptr);
+int path_exists(const char* path);
 
 #endif //YOUTUBE_UTIL_H

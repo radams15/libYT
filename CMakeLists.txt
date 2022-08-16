@@ -25,7 +25,7 @@ add_subdirectory(lib/librequest)
 add_library(yt SHARED src/main/Config.c src/main/Channel.c src/main/Video.c src/main/Util.c src/main/Net.c lib/cJSON/cJSON.c lib/cJSON/cJSON_Utils.c include/YT.h include/List.h src/main/Sort.c src/main/Sort.h)
 
 if(BUILD_YTPLAY)
-add_executable(ytplay test/main.cpp)
+add_executable(ytplay test/main.c)
 target_link_libraries(ytplay yt)
 endif()
 
