@@ -15,14 +15,17 @@ void channel_get(Channel_t* channel, void* ptr){
     channel_free(channel);
 }
 
+extern const char* curl_req_get(const char* url);
+
 int main() {
-    Config_t* conf = config_new("sdgsnkgsdukigds", 0);
+    net_set_req_func(curl_req_get);
+    Config_t* conf = config_new("/home/rhys/.config/yt_saves.json", 0);
     conf->use_threading = 1;
 
-    config_get_vids_list(conf);
+    config_get_vids(conf, vid_get, NULL);
 
     config_save(conf);
     config_free(conf);
 
-    return 11;
+    return 0;
 }

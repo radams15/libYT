@@ -61,22 +61,49 @@ class _SwigNonDynamicMeta(type):
     __setattr__ = _swig_setattr_nondynamic_class_variable(type.__setattr__)
 
 
-class Channel(object):
+class Channel_t(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
-    id = property(_yt.Channel_id_get, _yt.Channel_id_set)
-    name = property(_yt.Channel_name_get, _yt.Channel_name_set)
+    id = property(_yt.Channel_t_id_get, _yt.Channel_t_id_set)
+    name = property(_yt.Channel_t_name_get, _yt.Channel_t_name_set)
+    sub_count = property(_yt.Channel_t_sub_count_get, _yt.Channel_t_sub_count_set)
+    video_count = property(_yt.Channel_t_video_count_get, _yt.Channel_t_video_count_set)
 
     def __init__(self):
-        _yt.Channel_swiginit(self, _yt.new_Channel())
-    __swig_destroy__ = _yt.delete_Channel
+        _yt.Channel_t_swiginit(self, _yt.new_Channel_t())
+    __swig_destroy__ = _yt.delete_Channel_t
 
-# Register Channel in _yt:
-_yt.Channel_swigregister(Channel)
+# Register Channel_t in _yt:
+_yt.Channel_t_swigregister(Channel_t)
+
+class Channels_t(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    arry = property(_yt.Channels_t_arry_get, _yt.Channels_t_arry_set)
+    length = property(_yt.Channels_t_length_get, _yt.Channels_t_length_set)
+
+    def __init__(self):
+        _yt.Channels_t_swiginit(self, _yt.new_Channels_t())
+    __swig_destroy__ = _yt.delete_Channels_t
+
+# Register Channels_t in _yt:
+_yt.Channels_t_swigregister(Channels_t)
 
 
 def channel_new(id):
     return _yt.channel_new(id)
+
+def vid_get_thumbnail(thumbnails):
+    return _yt.vid_get_thumbnail(thumbnails)
+
+def channel_new_from_name(name, conf):
+    return _yt.channel_new_from_name(name, conf)
+
+def channel_search(conf, query, page, callback, data):
+    return _yt.channel_search(conf, query, page, callback, data)
+
+def channel_search_list(conf, query, page):
+    return _yt.channel_search_list(conf, query, page)
 
 def channel_name(channel, conf):
     return _yt.channel_name(channel, conf)
@@ -84,86 +111,75 @@ def channel_name(channel, conf):
 def channel_get_vids(channel, conf, callback, data):
     return _yt.channel_get_vids(channel, conf, callback, data)
 
+def channel_get_vids_list(channel, conf):
+    return _yt.channel_get_vids_list(channel, conf)
+
 def channel_free(channel):
     return _yt.channel_free(channel)
-class Subs(object):
+class Config_t(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
-    array = property(_yt.Subs_array_get, _yt.Subs_array_set)
-    length = property(_yt.Subs_length_get, _yt.Subs_length_set)
+    fname = property(_yt.Config_t_fname_get, _yt.Config_t_fname_set)
+    quality = property(_yt.Config_t_quality_get, _yt.Config_t_quality_set)
+    subs = property(_yt.Config_t_subs_get, _yt.Config_t_subs_set)
+    invidious_inst = property(_yt.Config_t_invidious_inst_get, _yt.Config_t_invidious_inst_set)
+    use_threading = property(_yt.Config_t_use_threading_get, _yt.Config_t_use_threading_set)
+    use_proxy = property(_yt.Config_t_use_proxy_get, _yt.Config_t_use_proxy_set)
+    proxy_url = property(_yt.Config_t_proxy_url_get, _yt.Config_t_proxy_url_set)
 
     def __init__(self):
-        _yt.Subs_swiginit(self, _yt.new_Subs())
-    __swig_destroy__ = _yt.delete_Subs
+        _yt.Config_t_swiginit(self, _yt.new_Config_t())
+    __swig_destroy__ = _yt.delete_Config_t
 
-# Register Subs in _yt:
-_yt.Subs_swigregister(Subs)
-
-class Config(object):
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-    file = property(_yt.Config_file_get, _yt.Config_file_set)
-    quality = property(_yt.Config_quality_get, _yt.Config_quality_set)
-    subs = property(_yt.Config_subs_get, _yt.Config_subs_set)
-    invidious_inst = property(_yt.Config_invidious_inst_get, _yt.Config_invidious_inst_set)
-    use_threading = property(_yt.Config_use_threading_get, _yt.Config_use_threading_set)
-
-    def __init__(self):
-        _yt.Config_swiginit(self, _yt.new_Config())
-    __swig_destroy__ = _yt.delete_Config
-
-# Register Config in _yt:
-_yt.Config_swigregister(Config)
-
-class Videos(object):
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-    array = property(_yt.Videos_array_get, _yt.Videos_array_set)
-    length = property(_yt.Videos_length_get, _yt.Videos_length_set)
-
-    def __init__(self):
-        _yt.Videos_swiginit(self, _yt.new_Videos())
-    __swig_destroy__ = _yt.delete_Videos
-
-# Register Videos in _yt:
-_yt.Videos_swigregister(Videos)
+# Register Config_t in _yt:
+_yt.Config_t_swigregister(Config_t)
 
 
-def config_new(file):
-    return _yt.config_new(file)
+def config_new(fname, use_proxy):
+    return _yt.config_new(fname, use_proxy)
 
 def config_subs_add(conf, channel):
     return _yt.config_subs_add(conf, channel)
 
+def config_subs_rm(conf, channel):
+    return _yt.config_subs_rm(conf, channel)
+
+def config_save(conf):
+    return _yt.config_save(conf)
+
 def config_get_vids_list(conf):
     return _yt.config_get_vids_list(conf)
-
-def videos_free(vids):
-    return _yt.videos_free(vids)
-
-def videos_get(vids, index):
-    return _yt.videos_get(vids, index)
 
 def config_get_vids(conf, callback, data):
     return _yt.config_get_vids(conf, callback, data)
 
+def video_get_playable(video, conf):
+    return _yt.video_get_playable(video, conf)
+
 def config_free(conf):
     return _yt.config_free(conf)
-class Video(object):
+
+def config_video_search(conf, query, page, callback, data):
+    return _yt.config_video_search(conf, query, page, callback, data)
+
+def config_video_search_list(conf, query, page):
+    return _yt.config_video_search_list(conf, query, page)
+class Video_t(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
-    id = property(_yt.Video_id_get, _yt.Video_id_set)
-    title = property(_yt.Video_title_get, _yt.Video_title_set)
-    channel_name = property(_yt.Video_channel_name_get, _yt.Video_channel_name_set)
-    channel_id = property(_yt.Video_channel_id_get, _yt.Video_channel_id_set)
-    published = property(_yt.Video_published_get, _yt.Video_published_set)
+    id = property(_yt.Video_t_id_get, _yt.Video_t_id_set)
+    title = property(_yt.Video_t_title_get, _yt.Video_t_title_set)
+    channel_name = property(_yt.Video_t_channel_name_get, _yt.Video_t_channel_name_set)
+    channel_id = property(_yt.Video_t_channel_id_get, _yt.Video_t_channel_id_set)
+    thumbnail = property(_yt.Video_t_thumbnail_get, _yt.Video_t_thumbnail_set)
+    published = property(_yt.Video_t_published_get, _yt.Video_t_published_set)
 
     def __init__(self):
-        _yt.Video_swiginit(self, _yt.new_Video())
-    __swig_destroy__ = _yt.delete_Video
+        _yt.Video_t_swiginit(self, _yt.new_Video_t())
+    __swig_destroy__ = _yt.delete_Video_t
 
-# Register Video in _yt:
-_yt.Video_swigregister(Video)
+# Register Video_t in _yt:
+_yt.Video_t_swigregister(Video_t)
 
 
 def video_new():
@@ -172,7 +188,10 @@ def video_new():
 def video_free(video):
     return _yt.video_free(video)
 
-def video_get_playable(video, conf):
-    return _yt.video_get_playable(video, conf)
+def net_get(url, use_proxy, proxy_url):
+    return _yt.net_get(url, use_proxy, proxy_url)
+
+def net_set_req_func(func):
+    return _yt.net_set_req_func(func)
 
 

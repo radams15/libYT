@@ -2666,16 +2666,18 @@ SWIGINTERN PyObject *SWIG_PyStaticMethod_New(PyObject *SWIGUNUSEDPARM(self), PyO
 /* -------- TYPES TABLE (BEGIN) -------- */
 
 #define SWIGTYPE_p_Channel swig_types[0]
-#define SWIGTYPE_p_Config swig_types[1]
-#define SWIGTYPE_p_Subs swig_types[2]
-#define SWIGTYPE_p_Video swig_types[3]
-#define SWIGTYPE_p_Videos swig_types[4]
-#define SWIGTYPE_p_char swig_types[5]
-#define SWIGTYPE_p_f_p_struct_Video_p_void__void swig_types[6]
-#define SWIGTYPE_p_p_Channel swig_types[7]
-#define SWIGTYPE_p_p_Video swig_types[8]
-static swig_type_info *swig_types[10];
-static swig_module_info swig_module = {swig_types, 9, 0, 0, 0, 0};
+#define SWIGTYPE_p_Channels swig_types[1]
+#define SWIGTYPE_p_Config swig_types[2]
+#define SWIGTYPE_p_List swig_types[3]
+#define SWIGTYPE_p_List_t swig_types[4]
+#define SWIGTYPE_p_Video swig_types[5]
+#define SWIGTYPE_p_char swig_types[6]
+#define SWIGTYPE_p_f_p_q_const__char__p_char swig_types[7]
+#define SWIGTYPE_p_f_p_struct_Channel_p_void__void swig_types[8]
+#define SWIGTYPE_p_f_p_struct_Video_p_void__void swig_types[9]
+#define SWIGTYPE_p_p_Channel swig_types[10]
+static swig_type_info *swig_types[12];
+static swig_module_info swig_module = {swig_types, 11, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -2709,6 +2711,7 @@ static swig_module_info swig_module = {swig_types, 9, 0, 0, 0, 0};
 #include "../include/Channel.h"
 #include "../include/Config.h"
 #include "../include/Video.h"
+#include "../include/Net.h"
 
 
 SWIGINTERN swig_type_info*
@@ -2868,23 +2871,6 @@ SWIG_FromCharPtr(const char *cptr)
 }
 
 
-SWIGINTERNINLINE PyObject*
-  SWIG_From_int  (int value)
-{
-  return PyInt_FromLong((long) value);
-}
-
-
-#include <limits.h>
-#if !defined(SWIG_NO_LLONG_MAX)
-# if !defined(LLONG_MAX) && defined(__GNUC__) && defined (__LONG_LONG_MAX__)
-#   define LLONG_MAX __LONG_LONG_MAX__
-#   define LLONG_MIN (-LLONG_MAX - 1LL)
-#   define ULLONG_MAX (LLONG_MAX * 2ULL + 1ULL)
-# endif
-#endif
-
-
 SWIGINTERN int
 SWIG_AsVal_double (PyObject *obj, double *val)
 {
@@ -3010,6 +2996,19 @@ SWIG_AsVal_long (PyObject *obj, long* val)
 }
 
 
+  #define SWIG_From_long   PyInt_FromLong 
+
+
+#include <limits.h>
+#if !defined(SWIG_NO_LLONG_MAX)
+# if !defined(LLONG_MAX) && defined(__GNUC__) && defined (__LONG_LONG_MAX__)
+#   define LLONG_MAX __LONG_LONG_MAX__
+#   define LLONG_MIN (-LLONG_MAX - 1LL)
+#   define ULLONG_MAX (LLONG_MAX * 2ULL + 1ULL)
+# endif
+#endif
+
+
 SWIGINTERN int
 SWIG_AsVal_int (PyObject * obj, int *val)
 {
@@ -3026,161 +3025,16 @@ SWIG_AsVal_int (PyObject * obj, int *val)
 }
 
 
-SWIGINTERN int
-SWIG_AsVal_unsigned_SS_long (PyObject *obj, unsigned long *val) 
+SWIGINTERNINLINE PyObject*
+  SWIG_From_int  (int value)
 {
-#if PY_VERSION_HEX < 0x03000000
-  if (PyInt_Check(obj)) {
-    long v = PyInt_AsLong(obj);
-    if (v >= 0) {
-      if (val) *val = v;
-      return SWIG_OK;
-    } else {
-      return SWIG_OverflowError;
-    }
-  } else
-#endif
-  if (PyLong_Check(obj)) {
-    unsigned long v = PyLong_AsUnsignedLong(obj);
-    if (!PyErr_Occurred()) {
-      if (val) *val = v;
-      return SWIG_OK;
-    } else {
-      PyErr_Clear();
-      return SWIG_OverflowError;
-    }
-  }
-#ifdef SWIG_PYTHON_CAST_MODE
-  {
-    int dispatch = 0;
-    unsigned long v = PyLong_AsUnsignedLong(obj);
-    if (!PyErr_Occurred()) {
-      if (val) *val = v;
-      return SWIG_AddCast(SWIG_OK);
-    } else {
-      PyErr_Clear();
-    }
-    if (!dispatch) {
-      double d;
-      int res = SWIG_AddCast(SWIG_AsVal_double (obj,&d));
-      if (SWIG_IsOK(res) && SWIG_CanCastAsInteger(&d, 0, ULONG_MAX)) {
-	if (val) *val = (unsigned long)(d);
-	return res;
-      }
-    }
-  }
-#endif
-  return SWIG_TypeError;
-}
-
-
-#if defined(LLONG_MAX) && !defined(SWIG_LONG_LONG_AVAILABLE)
-#  define SWIG_LONG_LONG_AVAILABLE
-#endif
-
-
-#ifdef SWIG_LONG_LONG_AVAILABLE
-SWIGINTERN int
-SWIG_AsVal_unsigned_SS_long_SS_long (PyObject *obj, unsigned long long *val)
-{
-  int res = SWIG_TypeError;
-  if (PyLong_Check(obj)) {
-    unsigned long long v = PyLong_AsUnsignedLongLong(obj);
-    if (!PyErr_Occurred()) {
-      if (val) *val = v;
-      return SWIG_OK;
-    } else {
-      PyErr_Clear();
-      res = SWIG_OverflowError;
-    }
-  } else {
-    unsigned long v;
-    res = SWIG_AsVal_unsigned_SS_long (obj,&v);
-    if (SWIG_IsOK(res)) {
-      if (val) *val = v;
-      return res;
-    }
-  }
-#ifdef SWIG_PYTHON_CAST_MODE
-  {
-    const double mant_max = 1LL << DBL_MANT_DIG;
-    double d;
-    res = SWIG_AsVal_double (obj,&d);
-    if (SWIG_IsOK(res) && !SWIG_CanCastAsInteger(&d, 0, mant_max))
-      return SWIG_OverflowError;
-    if (SWIG_IsOK(res) && SWIG_CanCastAsInteger(&d, 0, mant_max)) {
-      if (val) *val = (unsigned long long)(d);
-      return SWIG_AddCast(res);
-    }
-    res = SWIG_TypeError;
-  }
-#endif
-  return res;
-}
-#endif
-
-
-SWIGINTERNINLINE int
-SWIG_AsVal_size_t (PyObject * obj, size_t *val)
-{
-  int res = SWIG_TypeError;
-#ifdef SWIG_LONG_LONG_AVAILABLE
-  if (sizeof(size_t) <= sizeof(unsigned long)) {
-#endif
-    unsigned long v;
-    res = SWIG_AsVal_unsigned_SS_long (obj, val ? &v : 0);
-    if (SWIG_IsOK(res) && val) *val = (size_t)(v);
-#ifdef SWIG_LONG_LONG_AVAILABLE
-  } else if (sizeof(size_t) <= sizeof(unsigned long long)) {
-    unsigned long long v;
-    res = SWIG_AsVal_unsigned_SS_long_SS_long (obj, val ? &v : 0);
-    if (SWIG_IsOK(res) && val) *val = (size_t)(v);
-  }
-#endif
-  return res;
-}
-
-
-  #define SWIG_From_long   PyInt_FromLong 
-
-
-SWIGINTERNINLINE PyObject* 
-SWIG_From_unsigned_SS_long  (unsigned long value)
-{
-  return (value > LONG_MAX) ?
-    PyLong_FromUnsignedLong(value) : PyInt_FromLong((long)(value));
-}
-
-
-#ifdef SWIG_LONG_LONG_AVAILABLE
-SWIGINTERNINLINE PyObject* 
-SWIG_From_unsigned_SS_long_SS_long  (unsigned long long value)
-{
-  return (value > LONG_MAX) ?
-    PyLong_FromUnsignedLongLong(value) : PyInt_FromLong((long)(value));
-}
-#endif
-
-
-SWIGINTERNINLINE PyObject *
-SWIG_From_size_t  (size_t value)
-{    
-#ifdef SWIG_LONG_LONG_AVAILABLE
-  if (sizeof(size_t) <= sizeof(unsigned long)) {
-#endif
-    return SWIG_From_unsigned_SS_long  ((unsigned long)(value));
-#ifdef SWIG_LONG_LONG_AVAILABLE
-  } else {
-    /* assume sizeof(size_t) <= sizeof(unsigned long long) */
-    return SWIG_From_unsigned_SS_long_SS_long  ((unsigned long long)(value));
-  }
-#endif
+  return PyInt_FromLong((long) value);
 }
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGINTERN PyObject *_wrap_Channel_id_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Channel_t_id_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Channel *arg1 = (struct Channel *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3191,15 +3045,15 @@ SWIGINTERN PyObject *_wrap_Channel_id_set(PyObject *SWIGUNUSEDPARM(self), PyObje
   int alloc2 = 0 ;
   PyObject *swig_obj[2] ;
   
-  if (!SWIG_Python_UnpackTuple(args, "Channel_id_set", 2, 2, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "Channel_t_id_set", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Channel, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Channel_id_set" "', argument " "1"" of type '" "struct Channel *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Channel_t_id_set" "', argument " "1"" of type '" "struct Channel *""'"); 
   }
   arg1 = (struct Channel *)(argp1);
   res2 = SWIG_AsCharPtrAndSize(swig_obj[1], &buf2, NULL, &alloc2);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Channel_id_set" "', argument " "2"" of type '" "char *""'");
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Channel_t_id_set" "', argument " "2"" of type '" "char *""'");
   }
   arg2 = (char *)(buf2);
   if (arg1->id) free((char*)arg1->id);
@@ -3218,7 +3072,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Channel_id_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Channel_t_id_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Channel *arg1 = (struct Channel *) 0 ;
   void *argp1 = 0 ;
@@ -3230,7 +3084,7 @@ SWIGINTERN PyObject *_wrap_Channel_id_get(PyObject *SWIGUNUSEDPARM(self), PyObje
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Channel, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Channel_id_get" "', argument " "1"" of type '" "struct Channel *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Channel_t_id_get" "', argument " "1"" of type '" "struct Channel *""'"); 
   }
   arg1 = (struct Channel *)(argp1);
   result = (char *) ((arg1)->id);
@@ -3241,7 +3095,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Channel_name_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Channel_t_name_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Channel *arg1 = (struct Channel *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3252,15 +3106,15 @@ SWIGINTERN PyObject *_wrap_Channel_name_set(PyObject *SWIGUNUSEDPARM(self), PyOb
   int alloc2 = 0 ;
   PyObject *swig_obj[2] ;
   
-  if (!SWIG_Python_UnpackTuple(args, "Channel_name_set", 2, 2, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "Channel_t_name_set", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Channel, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Channel_name_set" "', argument " "1"" of type '" "struct Channel *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Channel_t_name_set" "', argument " "1"" of type '" "struct Channel *""'"); 
   }
   arg1 = (struct Channel *)(argp1);
   res2 = SWIG_AsCharPtrAndSize(swig_obj[1], &buf2, NULL, &alloc2);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Channel_name_set" "', argument " "2"" of type '" "char *""'");
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Channel_t_name_set" "', argument " "2"" of type '" "char *""'");
   }
   arg2 = (char *)(buf2);
   if (arg1->name) free((char*)arg1->name);
@@ -3279,7 +3133,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Channel_name_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Channel_t_name_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Channel *arg1 = (struct Channel *) 0 ;
   void *argp1 = 0 ;
@@ -3291,7 +3145,7 @@ SWIGINTERN PyObject *_wrap_Channel_name_get(PyObject *SWIGUNUSEDPARM(self), PyOb
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Channel, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Channel_name_get" "', argument " "1"" of type '" "struct Channel *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Channel_t_name_get" "', argument " "1"" of type '" "struct Channel *""'"); 
   }
   arg1 = (struct Channel *)(argp1);
   result = (char *) ((arg1)->name);
@@ -3302,11 +3156,115 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_new_Channel(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Channel_t_sub_count_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  struct Channel *arg1 = (struct Channel *) 0 ;
+  long arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  long val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  if (!SWIG_Python_UnpackTuple(args, "Channel_t_sub_count_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Channel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Channel_t_sub_count_set" "', argument " "1"" of type '" "struct Channel *""'"); 
+  }
+  arg1 = (struct Channel *)(argp1);
+  ecode2 = SWIG_AsVal_long(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Channel_t_sub_count_set" "', argument " "2"" of type '" "long""'");
+  } 
+  arg2 = (long)(val2);
+  if (arg1) (arg1)->sub_count = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Channel_t_sub_count_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  struct Channel *arg1 = (struct Channel *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  long result;
+  
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Channel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Channel_t_sub_count_get" "', argument " "1"" of type '" "struct Channel *""'"); 
+  }
+  arg1 = (struct Channel *)(argp1);
+  result = (long) ((arg1)->sub_count);
+  resultobj = SWIG_From_long((long)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Channel_t_video_count_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  struct Channel *arg1 = (struct Channel *) 0 ;
+  long arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  long val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  if (!SWIG_Python_UnpackTuple(args, "Channel_t_video_count_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Channel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Channel_t_video_count_set" "', argument " "1"" of type '" "struct Channel *""'"); 
+  }
+  arg1 = (struct Channel *)(argp1);
+  ecode2 = SWIG_AsVal_long(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Channel_t_video_count_set" "', argument " "2"" of type '" "long""'");
+  } 
+  arg2 = (long)(val2);
+  if (arg1) (arg1)->video_count = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Channel_t_video_count_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  struct Channel *arg1 = (struct Channel *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  long result;
+  
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Channel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Channel_t_video_count_get" "', argument " "1"" of type '" "struct Channel *""'"); 
+  }
+  arg1 = (struct Channel *)(argp1);
+  result = (long) ((arg1)->video_count);
+  resultobj = SWIG_From_long((long)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_Channel_t(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Channel *result = 0 ;
   
-  if (!SWIG_Python_UnpackTuple(args, "new_Channel", 0, 0, 0)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "new_Channel_t", 0, 0, 0)) SWIG_fail;
   result = (struct Channel *)calloc(1, sizeof(struct Channel));
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_Channel, SWIG_POINTER_NEW |  0 );
   return resultobj;
@@ -3315,7 +3273,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_delete_Channel(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_delete_Channel_t(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Channel *arg1 = (struct Channel *) 0 ;
   void *argp1 = 0 ;
@@ -3326,7 +3284,7 @@ SWIGINTERN PyObject *_wrap_delete_Channel(PyObject *SWIGUNUSEDPARM(self), PyObje
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Channel, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Channel" "', argument " "1"" of type '" "struct Channel *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Channel_t" "', argument " "1"" of type '" "struct Channel *""'"); 
   }
   arg1 = (struct Channel *)(argp1);
   free((char *) arg1);
@@ -3337,14 +3295,164 @@ fail:
 }
 
 
-SWIGINTERN PyObject *Channel_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *Channel_t_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *obj;
   if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
   SWIG_TypeNewClientData(SWIGTYPE_p_Channel, SWIG_NewClientData(obj));
   return SWIG_Py_Void();
 }
 
-SWIGINTERN PyObject *Channel_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *Channel_t_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_Channels_t_arry_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  struct Channels *arg1 = (struct Channels *) 0 ;
+  Channel_t **arg2 = (Channel_t **) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  if (!SWIG_Python_UnpackTuple(args, "Channels_t_arry_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Channels, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Channels_t_arry_set" "', argument " "1"" of type '" "struct Channels *""'"); 
+  }
+  arg1 = (struct Channels *)(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_p_Channel, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Channels_t_arry_set" "', argument " "2"" of type '" "Channel_t **""'"); 
+  }
+  arg2 = (Channel_t **)(argp2);
+  if (arg1) (arg1)->arry = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Channels_t_arry_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  struct Channels *arg1 = (struct Channels *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  Channel_t **result = 0 ;
+  
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Channels, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Channels_t_arry_get" "', argument " "1"" of type '" "struct Channels *""'"); 
+  }
+  arg1 = (struct Channels *)(argp1);
+  result = (Channel_t **) ((arg1)->arry);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_p_Channel, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Channels_t_length_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  struct Channels *arg1 = (struct Channels *) 0 ;
+  long arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  long val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  if (!SWIG_Python_UnpackTuple(args, "Channels_t_length_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Channels, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Channels_t_length_set" "', argument " "1"" of type '" "struct Channels *""'"); 
+  }
+  arg1 = (struct Channels *)(argp1);
+  ecode2 = SWIG_AsVal_long(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Channels_t_length_set" "', argument " "2"" of type '" "long""'");
+  } 
+  arg2 = (long)(val2);
+  if (arg1) (arg1)->length = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Channels_t_length_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  struct Channels *arg1 = (struct Channels *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  long result;
+  
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Channels, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Channels_t_length_get" "', argument " "1"" of type '" "struct Channels *""'"); 
+  }
+  arg1 = (struct Channels *)(argp1);
+  result = (long) ((arg1)->length);
+  resultobj = SWIG_From_long((long)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_Channels_t(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  struct Channels *result = 0 ;
+  
+  if (!SWIG_Python_UnpackTuple(args, "new_Channels_t", 0, 0, 0)) SWIG_fail;
+  result = (struct Channels *)calloc(1, sizeof(struct Channels));
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_Channels, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_Channels_t(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  struct Channels *arg1 = (struct Channels *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Channels, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Channels_t" "', argument " "1"" of type '" "struct Channels *""'"); 
+  }
+  arg1 = (struct Channels *)(argp1);
+  free((char *) arg1);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *Channels_t_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_Channels, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *Channels_t_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   return SWIG_Python_InitShadowInstance(args);
 }
 
@@ -3355,7 +3463,7 @@ SWIGINTERN PyObject *_wrap_channel_new(PyObject *SWIGUNUSEDPARM(self), PyObject 
   char *buf1 = 0 ;
   int alloc1 = 0 ;
   PyObject *swig_obj[1] ;
-  struct Channel *result = 0 ;
+  Channel_t *result = 0 ;
   
   if (!args) SWIG_fail;
   swig_obj[0] = args;
@@ -3364,7 +3472,7 @@ SWIGINTERN PyObject *_wrap_channel_new(PyObject *SWIGUNUSEDPARM(self), PyObject 
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "channel_new" "', argument " "1"" of type '" "char const *""'");
   }
   arg1 = (char *)(buf1);
-  result = (struct Channel *)channel_new((char const *)arg1);
+  result = (Channel_t *)channel_new((char const *)arg1);
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_Channel, 0 |  0 );
   if (alloc1 == SWIG_NEWOBJ) free((char*)buf1);
   return resultobj;
@@ -3374,10 +3482,158 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_vid_get_thumbnail(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  void *arg1 = (void *) 0 ;
+  int res1 ;
+  PyObject *swig_obj[1] ;
+  char *result = 0 ;
+  
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0],SWIG_as_voidptrptr(&arg1), 0, 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "vid_get_thumbnail" "', argument " "1"" of type '" "void *""'"); 
+  }
+  result = (char *)vid_get_thumbnail(arg1);
+  resultobj = SWIG_FromCharPtr((const char *)result);
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_channel_new_from_name(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  char *arg1 = (char *) 0 ;
+  Config_t *arg2 = (Config_t *) 0 ;
+  int res1 ;
+  char *buf1 = 0 ;
+  int alloc1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  Channel_t *result = 0 ;
+  
+  if (!SWIG_Python_UnpackTuple(args, "channel_new_from_name", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_AsCharPtrAndSize(swig_obj[0], &buf1, NULL, &alloc1);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "channel_new_from_name" "', argument " "1"" of type '" "char const *""'");
+  }
+  arg1 = (char *)(buf1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_Config, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "channel_new_from_name" "', argument " "2"" of type '" "Config_t *""'"); 
+  }
+  arg2 = (Config_t *)(argp2);
+  result = (Channel_t *)channel_new_from_name((char const *)arg1,arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_Channel, 0 |  0 );
+  if (alloc1 == SWIG_NEWOBJ) free((char*)buf1);
+  return resultobj;
+fail:
+  if (alloc1 == SWIG_NEWOBJ) free((char*)buf1);
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_channel_search(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Config_t *arg1 = (Config_t *) 0 ;
+  char *arg2 = (char *) 0 ;
+  int arg3 ;
+  channel_cb arg4 = (channel_cb) 0 ;
+  void *arg5 = (void *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 ;
+  char *buf2 = 0 ;
+  int alloc2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  int res5 ;
+  PyObject *swig_obj[5] ;
+  
+  if (!SWIG_Python_UnpackTuple(args, "channel_search", 5, 5, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "channel_search" "', argument " "1"" of type '" "Config_t *""'"); 
+  }
+  arg1 = (Config_t *)(argp1);
+  res2 = SWIG_AsCharPtrAndSize(swig_obj[1], &buf2, NULL, &alloc2);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "channel_search" "', argument " "2"" of type '" "char const *""'");
+  }
+  arg2 = (char *)(buf2);
+  ecode3 = SWIG_AsVal_int(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "channel_search" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = (int)(val3);
+  {
+    int res = SWIG_ConvertFunctionPtr(swig_obj[3], (void**)(&arg4), SWIGTYPE_p_f_p_struct_Channel_p_void__void);
+    if (!SWIG_IsOK(res)) {
+      SWIG_exception_fail(SWIG_ArgError(res), "in method '" "channel_search" "', argument " "4"" of type '" "channel_cb""'"); 
+    }
+  }
+  res5 = SWIG_ConvertPtr(swig_obj[4],SWIG_as_voidptrptr(&arg5), 0, 0);
+  if (!SWIG_IsOK(res5)) {
+    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "channel_search" "', argument " "5"" of type '" "void *""'"); 
+  }
+  channel_search(arg1,(char const *)arg2,arg3,arg4,arg5);
+  resultobj = SWIG_Py_Void();
+  if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+  return resultobj;
+fail:
+  if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_channel_search_list(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Config_t *arg1 = (Config_t *) 0 ;
+  char *arg2 = (char *) 0 ;
+  int arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 ;
+  char *buf2 = 0 ;
+  int alloc2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  PyObject *swig_obj[3] ;
+  List_t *result = 0 ;
+  
+  if (!SWIG_Python_UnpackTuple(args, "channel_search_list", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "channel_search_list" "', argument " "1"" of type '" "Config_t *""'"); 
+  }
+  arg1 = (Config_t *)(argp1);
+  res2 = SWIG_AsCharPtrAndSize(swig_obj[1], &buf2, NULL, &alloc2);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "channel_search_list" "', argument " "2"" of type '" "char const *""'");
+  }
+  arg2 = (char *)(buf2);
+  ecode3 = SWIG_AsVal_int(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "channel_search_list" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = (int)(val3);
+  result = (List_t *)channel_search_list(arg1,(char const *)arg2,arg3);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_List_t, 0 |  0 );
+  if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+  return resultobj;
+fail:
+  if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_channel_name(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  struct Channel *arg1 = (struct Channel *) 0 ;
-  struct Config *arg2 = (struct Config *) 0 ;
+  Channel_t *arg1 = (Channel_t *) 0 ;
+  Config_t *arg2 = (Config_t *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -3388,14 +3644,14 @@ SWIGINTERN PyObject *_wrap_channel_name(PyObject *SWIGUNUSEDPARM(self), PyObject
   if (!SWIG_Python_UnpackTuple(args, "channel_name", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Channel, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "channel_name" "', argument " "1"" of type '" "struct Channel *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "channel_name" "', argument " "1"" of type '" "Channel_t *""'"); 
   }
-  arg1 = (struct Channel *)(argp1);
+  arg1 = (Channel_t *)(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_Config, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "channel_name" "', argument " "2"" of type '" "struct Config *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "channel_name" "', argument " "2"" of type '" "Config_t *""'"); 
   }
-  arg2 = (struct Config *)(argp2);
+  arg2 = (Config_t *)(argp2);
   result = (char *)channel_name(arg1,arg2);
   resultobj = SWIG_FromCharPtr((const char *)result);
   return resultobj;
@@ -3406,8 +3662,8 @@ fail:
 
 SWIGINTERN PyObject *_wrap_channel_get_vids(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  struct Channel *arg1 = (struct Channel *) 0 ;
-  struct Config *arg2 = (struct Config *) 0 ;
+  Channel_t *arg1 = (Channel_t *) 0 ;
+  Config_t *arg2 = (Config_t *) 0 ;
   vid_cb arg3 = (vid_cb) 0 ;
   void *arg4 = (void *) 0 ;
   void *argp1 = 0 ;
@@ -3421,14 +3677,14 @@ SWIGINTERN PyObject *_wrap_channel_get_vids(PyObject *SWIGUNUSEDPARM(self), PyOb
   if (!SWIG_Python_UnpackTuple(args, "channel_get_vids", 4, 4, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Channel, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "channel_get_vids" "', argument " "1"" of type '" "struct Channel *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "channel_get_vids" "', argument " "1"" of type '" "Channel_t *""'"); 
   }
-  arg1 = (struct Channel *)(argp1);
+  arg1 = (Channel_t *)(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_Config, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "channel_get_vids" "', argument " "2"" of type '" "struct Config *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "channel_get_vids" "', argument " "2"" of type '" "Config_t *""'"); 
   }
-  arg2 = (struct Config *)(argp2);
+  arg2 = (Config_t *)(argp2);
   {
     int res = SWIG_ConvertFunctionPtr(swig_obj[2], (void**)(&arg3), SWIGTYPE_p_f_p_struct_Video_p_void__void);
     if (!SWIG_IsOK(res)) {
@@ -3447,9 +3703,39 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_channel_get_vids_list(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Channel_t *arg1 = (Channel_t *) 0 ;
+  Config_t *arg2 = (Config_t *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  List_t *result = 0 ;
+  
+  if (!SWIG_Python_UnpackTuple(args, "channel_get_vids_list", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Channel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "channel_get_vids_list" "', argument " "1"" of type '" "Channel_t *""'"); 
+  }
+  arg1 = (Channel_t *)(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_Config, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "channel_get_vids_list" "', argument " "2"" of type '" "Config_t *""'"); 
+  }
+  arg2 = (Config_t *)(argp2);
+  result = (List_t *)channel_get_vids_list(arg1,arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_List_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_channel_free(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  struct Channel *arg1 = (struct Channel *) 0 ;
+  Channel_t *arg1 = (Channel_t *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -3458,9 +3744,9 @@ SWIGINTERN PyObject *_wrap_channel_free(PyObject *SWIGUNUSEDPARM(self), PyObject
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Channel, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "channel_free" "', argument " "1"" of type '" "struct Channel *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "channel_free" "', argument " "1"" of type '" "Channel_t *""'"); 
   }
-  arg1 = (struct Channel *)(argp1);
+  arg1 = (Channel_t *)(argp1);
   channel_free(arg1);
   resultobj = SWIG_Py_Void();
   return resultobj;
@@ -3469,157 +3755,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Subs_array_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  struct Subs *arg1 = (struct Subs *) 0 ;
-  struct Channel **arg2 = (struct Channel **) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  PyObject *swig_obj[2] ;
-  
-  if (!SWIG_Python_UnpackTuple(args, "Subs_array_set", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Subs, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Subs_array_set" "', argument " "1"" of type '" "struct Subs *""'"); 
-  }
-  arg1 = (struct Subs *)(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_p_Channel, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Subs_array_set" "', argument " "2"" of type '" "struct Channel **""'"); 
-  }
-  arg2 = (struct Channel **)(argp2);
-  if (arg1) (arg1)->array = arg2;
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Subs_array_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  struct Subs *arg1 = (struct Subs *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  struct Channel **result = 0 ;
-  
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Subs, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Subs_array_get" "', argument " "1"" of type '" "struct Subs *""'"); 
-  }
-  arg1 = (struct Subs *)(argp1);
-  result = (struct Channel **) ((arg1)->array);
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_p_Channel, 0 |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Subs_length_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  struct Subs *arg1 = (struct Subs *) 0 ;
-  int arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int val2 ;
-  int ecode2 = 0 ;
-  PyObject *swig_obj[2] ;
-  
-  if (!SWIG_Python_UnpackTuple(args, "Subs_length_set", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Subs, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Subs_length_set" "', argument " "1"" of type '" "struct Subs *""'"); 
-  }
-  arg1 = (struct Subs *)(argp1);
-  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Subs_length_set" "', argument " "2"" of type '" "int""'");
-  } 
-  arg2 = (int)(val2);
-  if (arg1) (arg1)->length = arg2;
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Subs_length_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  struct Subs *arg1 = (struct Subs *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  int result;
-  
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Subs, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Subs_length_get" "', argument " "1"" of type '" "struct Subs *""'"); 
-  }
-  arg1 = (struct Subs *)(argp1);
-  result = (int) ((arg1)->length);
-  resultobj = SWIG_From_int((int)(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_new_Subs(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  struct Subs *result = 0 ;
-  
-  if (!SWIG_Python_UnpackTuple(args, "new_Subs", 0, 0, 0)) SWIG_fail;
-  result = (struct Subs *)calloc(1, sizeof(struct Subs));
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_Subs, SWIG_POINTER_NEW |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_delete_Subs(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  struct Subs *arg1 = (struct Subs *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Subs, SWIG_POINTER_DISOWN |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Subs" "', argument " "1"" of type '" "struct Subs *""'"); 
-  }
-  arg1 = (struct Subs *)(argp1);
-  free((char *) arg1);
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *Subs_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *obj;
-  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
-  SWIG_TypeNewClientData(SWIGTYPE_p_Subs, SWIG_NewClientData(obj));
-  return SWIG_Py_Void();
-}
-
-SWIGINTERN PyObject *Subs_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  return SWIG_Python_InitShadowInstance(args);
-}
-
-SWIGINTERN PyObject *_wrap_Config_file_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Config_t_fname_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Config *arg1 = (struct Config *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3630,22 +3766,22 @@ SWIGINTERN PyObject *_wrap_Config_file_set(PyObject *SWIGUNUSEDPARM(self), PyObj
   int alloc2 = 0 ;
   PyObject *swig_obj[2] ;
   
-  if (!SWIG_Python_UnpackTuple(args, "Config_file_set", 2, 2, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "Config_t_fname_set", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_file_set" "', argument " "1"" of type '" "struct Config *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_t_fname_set" "', argument " "1"" of type '" "struct Config *""'"); 
   }
   arg1 = (struct Config *)(argp1);
   res2 = SWIG_AsCharPtrAndSize(swig_obj[1], &buf2, NULL, &alloc2);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Config_file_set" "', argument " "2"" of type '" "char const *""'");
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Config_t_fname_set" "', argument " "2"" of type '" "char const *""'");
   }
   arg2 = (char *)(buf2);
   if (arg2) {
     size_t size = strlen((const char *)((const char *)(arg2))) + 1;
-    arg1->file = (char const *)(char *)memcpy(malloc((size)*sizeof(char)), arg2, sizeof(char)*(size));
+    arg1->fname = (char const *)(char *)memcpy(malloc((size)*sizeof(char)), arg2, sizeof(char)*(size));
   } else {
-    arg1->file = 0;
+    arg1->fname = 0;
   }
   resultobj = SWIG_Py_Void();
   if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
@@ -3656,7 +3792,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Config_file_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Config_t_fname_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Config *arg1 = (struct Config *) 0 ;
   void *argp1 = 0 ;
@@ -3668,10 +3804,10 @@ SWIGINTERN PyObject *_wrap_Config_file_get(PyObject *SWIGUNUSEDPARM(self), PyObj
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_file_get" "', argument " "1"" of type '" "struct Config *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_t_fname_get" "', argument " "1"" of type '" "struct Config *""'"); 
   }
   arg1 = (struct Config *)(argp1);
-  result = (char *) ((arg1)->file);
+  result = (char *) ((arg1)->fname);
   resultobj = SWIG_FromCharPtr((const char *)result);
   return resultobj;
 fail:
@@ -3679,7 +3815,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Config_quality_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Config_t_quality_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Config *arg1 = (struct Config *) 0 ;
   int arg2 ;
@@ -3689,15 +3825,15 @@ SWIGINTERN PyObject *_wrap_Config_quality_set(PyObject *SWIGUNUSEDPARM(self), Py
   int ecode2 = 0 ;
   PyObject *swig_obj[2] ;
   
-  if (!SWIG_Python_UnpackTuple(args, "Config_quality_set", 2, 2, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "Config_t_quality_set", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_quality_set" "', argument " "1"" of type '" "struct Config *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_t_quality_set" "', argument " "1"" of type '" "struct Config *""'"); 
   }
   arg1 = (struct Config *)(argp1);
   ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Config_quality_set" "', argument " "2"" of type '" "int""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Config_t_quality_set" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
   if (arg1) (arg1)->quality = arg2;
@@ -3708,7 +3844,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Config_quality_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Config_t_quality_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Config *arg1 = (struct Config *) 0 ;
   void *argp1 = 0 ;
@@ -3720,7 +3856,7 @@ SWIGINTERN PyObject *_wrap_Config_quality_get(PyObject *SWIGUNUSEDPARM(self), Py
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_quality_get" "', argument " "1"" of type '" "struct Config *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_t_quality_get" "', argument " "1"" of type '" "struct Config *""'"); 
   }
   arg1 = (struct Config *)(argp1);
   result = (int) ((arg1)->quality);
@@ -3731,27 +3867,27 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Config_subs_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Config_t_subs_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Config *arg1 = (struct Config *) 0 ;
-  struct Subs *arg2 = (struct Subs *) 0 ;
+  struct List *arg2 = (struct List *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
   PyObject *swig_obj[2] ;
   
-  if (!SWIG_Python_UnpackTuple(args, "Config_subs_set", 2, 2, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "Config_t_subs_set", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_subs_set" "', argument " "1"" of type '" "struct Config *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_t_subs_set" "', argument " "1"" of type '" "struct Config *""'"); 
   }
   arg1 = (struct Config *)(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_Subs, SWIG_POINTER_DISOWN |  0 );
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_List, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Config_subs_set" "', argument " "2"" of type '" "struct Subs *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Config_t_subs_set" "', argument " "2"" of type '" "struct List *""'"); 
   }
-  arg2 = (struct Subs *)(argp2);
+  arg2 = (struct List *)(argp2);
   if (arg1) (arg1)->subs = arg2;
   resultobj = SWIG_Py_Void();
   return resultobj;
@@ -3760,30 +3896,30 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Config_subs_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Config_t_subs_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Config *arg1 = (struct Config *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  struct Subs *result = 0 ;
+  struct List *result = 0 ;
   
   if (!args) SWIG_fail;
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_subs_get" "', argument " "1"" of type '" "struct Config *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_t_subs_get" "', argument " "1"" of type '" "struct Config *""'"); 
   }
   arg1 = (struct Config *)(argp1);
-  result = (struct Subs *) ((arg1)->subs);
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_Subs, 0 |  0 );
+  result = (struct List *) ((arg1)->subs);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_List, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Config_invidious_inst_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Config_t_invidious_inst_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Config *arg1 = (struct Config *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3794,15 +3930,15 @@ SWIGINTERN PyObject *_wrap_Config_invidious_inst_set(PyObject *SWIGUNUSEDPARM(se
   int alloc2 = 0 ;
   PyObject *swig_obj[2] ;
   
-  if (!SWIG_Python_UnpackTuple(args, "Config_invidious_inst_set", 2, 2, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "Config_t_invidious_inst_set", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_invidious_inst_set" "', argument " "1"" of type '" "struct Config *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_t_invidious_inst_set" "', argument " "1"" of type '" "struct Config *""'"); 
   }
   arg1 = (struct Config *)(argp1);
   res2 = SWIG_AsCharPtrAndSize(swig_obj[1], &buf2, NULL, &alloc2);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Config_invidious_inst_set" "', argument " "2"" of type '" "char const *""'");
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Config_t_invidious_inst_set" "', argument " "2"" of type '" "char const *""'");
   }
   arg2 = (char *)(buf2);
   if (arg2) {
@@ -3820,7 +3956,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Config_invidious_inst_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Config_t_invidious_inst_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Config *arg1 = (struct Config *) 0 ;
   void *argp1 = 0 ;
@@ -3832,7 +3968,7 @@ SWIGINTERN PyObject *_wrap_Config_invidious_inst_get(PyObject *SWIGUNUSEDPARM(se
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_invidious_inst_get" "', argument " "1"" of type '" "struct Config *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_t_invidious_inst_get" "', argument " "1"" of type '" "struct Config *""'"); 
   }
   arg1 = (struct Config *)(argp1);
   result = (char *) ((arg1)->invidious_inst);
@@ -3843,7 +3979,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Config_use_threading_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Config_t_use_threading_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Config *arg1 = (struct Config *) 0 ;
   int arg2 ;
@@ -3853,15 +3989,15 @@ SWIGINTERN PyObject *_wrap_Config_use_threading_set(PyObject *SWIGUNUSEDPARM(sel
   int ecode2 = 0 ;
   PyObject *swig_obj[2] ;
   
-  if (!SWIG_Python_UnpackTuple(args, "Config_use_threading_set", 2, 2, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "Config_t_use_threading_set", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_use_threading_set" "', argument " "1"" of type '" "struct Config *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_t_use_threading_set" "', argument " "1"" of type '" "struct Config *""'"); 
   }
   arg1 = (struct Config *)(argp1);
   ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Config_use_threading_set" "', argument " "2"" of type '" "int""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Config_t_use_threading_set" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
   if (arg1) (arg1)->use_threading = arg2;
@@ -3872,7 +4008,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Config_use_threading_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Config_t_use_threading_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Config *arg1 = (struct Config *) 0 ;
   void *argp1 = 0 ;
@@ -3884,7 +4020,7 @@ SWIGINTERN PyObject *_wrap_Config_use_threading_get(PyObject *SWIGUNUSEDPARM(sel
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_use_threading_get" "', argument " "1"" of type '" "struct Config *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_t_use_threading_get" "', argument " "1"" of type '" "struct Config *""'"); 
   }
   arg1 = (struct Config *)(argp1);
   result = (int) ((arg1)->use_threading);
@@ -3895,11 +4031,123 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_new_Config(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Config_t_use_proxy_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  struct Config *arg1 = (struct Config *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  if (!SWIG_Python_UnpackTuple(args, "Config_t_use_proxy_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_t_use_proxy_set" "', argument " "1"" of type '" "struct Config *""'"); 
+  }
+  arg1 = (struct Config *)(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Config_t_use_proxy_set" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = (int)(val2);
+  if (arg1) (arg1)->use_proxy = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Config_t_use_proxy_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  struct Config *arg1 = (struct Config *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  int result;
+  
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_t_use_proxy_get" "', argument " "1"" of type '" "struct Config *""'"); 
+  }
+  arg1 = (struct Config *)(argp1);
+  result = (int) ((arg1)->use_proxy);
+  resultobj = SWIG_From_int((int)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Config_t_proxy_url_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  struct Config *arg1 = (struct Config *) 0 ;
+  char *arg2 = (char *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 ;
+  char *buf2 = 0 ;
+  int alloc2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  if (!SWIG_Python_UnpackTuple(args, "Config_t_proxy_url_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_t_proxy_url_set" "', argument " "1"" of type '" "struct Config *""'"); 
+  }
+  arg1 = (struct Config *)(argp1);
+  res2 = SWIG_AsCharPtrAndSize(swig_obj[1], &buf2, NULL, &alloc2);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Config_t_proxy_url_set" "', argument " "2"" of type '" "char const *""'");
+  }
+  arg2 = (char *)(buf2);
+  if (arg2) {
+    size_t size = strlen((const char *)((const char *)(arg2))) + 1;
+    arg1->proxy_url = (char const *)(char *)memcpy(malloc((size)*sizeof(char)), arg2, sizeof(char)*(size));
+  } else {
+    arg1->proxy_url = 0;
+  }
+  resultobj = SWIG_Py_Void();
+  if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+  return resultobj;
+fail:
+  if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Config_t_proxy_url_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  struct Config *arg1 = (struct Config *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  char *result = 0 ;
+  
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Config_t_proxy_url_get" "', argument " "1"" of type '" "struct Config *""'"); 
+  }
+  arg1 = (struct Config *)(argp1);
+  result = (char *) ((arg1)->proxy_url);
+  resultobj = SWIG_FromCharPtr((const char *)result);
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_Config_t(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Config *result = 0 ;
   
-  if (!SWIG_Python_UnpackTuple(args, "new_Config", 0, 0, 0)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "new_Config_t", 0, 0, 0)) SWIG_fail;
   result = (struct Config *)calloc(1, sizeof(struct Config));
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_Config, SWIG_POINTER_NEW |  0 );
   return resultobj;
@@ -3908,7 +4156,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_delete_Config(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_delete_Config_t(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Config *arg1 = (struct Config *) 0 ;
   void *argp1 = 0 ;
@@ -3919,7 +4167,7 @@ SWIGINTERN PyObject *_wrap_delete_Config(PyObject *SWIGUNUSEDPARM(self), PyObjec
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Config" "', argument " "1"" of type '" "struct Config *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Config_t" "', argument " "1"" of type '" "struct Config *""'"); 
   }
   arg1 = (struct Config *)(argp1);
   free((char *) arg1);
@@ -3930,184 +4178,41 @@ fail:
 }
 
 
-SWIGINTERN PyObject *Config_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *Config_t_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *obj;
   if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
   SWIG_TypeNewClientData(SWIGTYPE_p_Config, SWIG_NewClientData(obj));
   return SWIG_Py_Void();
 }
 
-SWIGINTERN PyObject *Config_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  return SWIG_Python_InitShadowInstance(args);
-}
-
-SWIGINTERN PyObject *_wrap_Videos_array_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  struct Videos *arg1 = (struct Videos *) 0 ;
-  struct Video **arg2 = (struct Video **) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  PyObject *swig_obj[2] ;
-  
-  if (!SWIG_Python_UnpackTuple(args, "Videos_array_set", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Videos, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Videos_array_set" "', argument " "1"" of type '" "struct Videos *""'"); 
-  }
-  arg1 = (struct Videos *)(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_p_Video, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Videos_array_set" "', argument " "2"" of type '" "struct Video **""'"); 
-  }
-  arg2 = (struct Video **)(argp2);
-  if (arg1) (arg1)->array = arg2;
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Videos_array_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  struct Videos *arg1 = (struct Videos *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  struct Video **result = 0 ;
-  
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Videos, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Videos_array_get" "', argument " "1"" of type '" "struct Videos *""'"); 
-  }
-  arg1 = (struct Videos *)(argp1);
-  result = (struct Video **) ((arg1)->array);
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_p_Video, 0 |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Videos_length_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  struct Videos *arg1 = (struct Videos *) 0 ;
-  int arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int val2 ;
-  int ecode2 = 0 ;
-  PyObject *swig_obj[2] ;
-  
-  if (!SWIG_Python_UnpackTuple(args, "Videos_length_set", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Videos, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Videos_length_set" "', argument " "1"" of type '" "struct Videos *""'"); 
-  }
-  arg1 = (struct Videos *)(argp1);
-  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Videos_length_set" "', argument " "2"" of type '" "int""'");
-  } 
-  arg2 = (int)(val2);
-  if (arg1) (arg1)->length = arg2;
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Videos_length_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  struct Videos *arg1 = (struct Videos *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  int result;
-  
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Videos, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Videos_length_get" "', argument " "1"" of type '" "struct Videos *""'"); 
-  }
-  arg1 = (struct Videos *)(argp1);
-  result = (int) ((arg1)->length);
-  resultobj = SWIG_From_int((int)(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_new_Videos(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  struct Videos *result = 0 ;
-  
-  if (!SWIG_Python_UnpackTuple(args, "new_Videos", 0, 0, 0)) SWIG_fail;
-  result = (struct Videos *)calloc(1, sizeof(struct Videos));
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_Videos, SWIG_POINTER_NEW |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_delete_Videos(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  struct Videos *arg1 = (struct Videos *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Videos, SWIG_POINTER_DISOWN |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Videos" "', argument " "1"" of type '" "struct Videos *""'"); 
-  }
-  arg1 = (struct Videos *)(argp1);
-  free((char *) arg1);
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *Videos_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *obj;
-  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
-  SWIG_TypeNewClientData(SWIGTYPE_p_Videos, SWIG_NewClientData(obj));
-  return SWIG_Py_Void();
-}
-
-SWIGINTERN PyObject *Videos_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *Config_t_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   return SWIG_Python_InitShadowInstance(args);
 }
 
 SWIGINTERN PyObject *_wrap_config_new(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   char *arg1 = (char *) 0 ;
+  int arg2 ;
   int res1 ;
   char *buf1 = 0 ;
   int alloc1 = 0 ;
-  PyObject *swig_obj[1] ;
-  struct Config *result = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  Config_t *result = 0 ;
   
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
+  if (!SWIG_Python_UnpackTuple(args, "config_new", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_AsCharPtrAndSize(swig_obj[0], &buf1, NULL, &alloc1);
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "config_new" "', argument " "1"" of type '" "char const *""'");
   }
   arg1 = (char *)(buf1);
-  result = (struct Config *)config_new((char const *)arg1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "config_new" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = (int)(val2);
+  result = (Config_t *)config_new((char const *)arg1,arg2);
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_Config, 0 |  0 );
   if (alloc1 == SWIG_NEWOBJ) free((char*)buf1);
   return resultobj;
@@ -4119,8 +4224,8 @@ fail:
 
 SWIGINTERN PyObject *_wrap_config_subs_add(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  struct Config *arg1 = (struct Config *) 0 ;
-  struct Channel *arg2 = (struct Channel *) 0 ;
+  Config_t *arg1 = (Config_t *) 0 ;
+  Channel_t *arg2 = (Channel_t *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -4130,15 +4235,66 @@ SWIGINTERN PyObject *_wrap_config_subs_add(PyObject *SWIGUNUSEDPARM(self), PyObj
   if (!SWIG_Python_UnpackTuple(args, "config_subs_add", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "config_subs_add" "', argument " "1"" of type '" "struct Config *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "config_subs_add" "', argument " "1"" of type '" "Config_t *""'"); 
   }
-  arg1 = (struct Config *)(argp1);
+  arg1 = (Config_t *)(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_Channel, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "config_subs_add" "', argument " "2"" of type '" "struct Channel *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "config_subs_add" "', argument " "2"" of type '" "Channel_t *""'"); 
   }
-  arg2 = (struct Channel *)(argp2);
+  arg2 = (Channel_t *)(argp2);
   config_subs_add(arg1,arg2);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_config_subs_rm(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Config_t *arg1 = (Config_t *) 0 ;
+  Channel_t *arg2 = (Channel_t *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  if (!SWIG_Python_UnpackTuple(args, "config_subs_rm", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "config_subs_rm" "', argument " "1"" of type '" "Config_t *""'"); 
+  }
+  arg1 = (Config_t *)(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_Channel, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "config_subs_rm" "', argument " "2"" of type '" "Channel_t *""'"); 
+  }
+  arg2 = (Channel_t *)(argp2);
+  config_subs_rm(arg1,arg2);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_config_save(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Config_t *arg1 = (Config_t *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "config_save" "', argument " "1"" of type '" "Config_t *""'"); 
+  }
+  arg1 = (Config_t *)(argp1);
+  config_save(arg1);
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4148,73 +4304,21 @@ fail:
 
 SWIGINTERN PyObject *_wrap_config_get_vids_list(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  struct Config *arg1 = (struct Config *) 0 ;
+  Config_t *arg1 = (Config_t *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  struct Videos *result = 0 ;
+  List_t *result = 0 ;
   
   if (!args) SWIG_fail;
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "config_get_vids_list" "', argument " "1"" of type '" "struct Config *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "config_get_vids_list" "', argument " "1"" of type '" "Config_t *""'"); 
   }
-  arg1 = (struct Config *)(argp1);
-  result = (struct Videos *)config_get_vids_list(arg1);
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_Videos, 0 |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_videos_free(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  struct Videos *arg1 = (struct Videos *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Videos, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "videos_free" "', argument " "1"" of type '" "struct Videos *""'"); 
-  }
-  arg1 = (struct Videos *)(argp1);
-  videos_free(arg1);
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_videos_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  struct Videos *arg1 = (struct Videos *) 0 ;
-  int arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int val2 ;
-  int ecode2 = 0 ;
-  PyObject *swig_obj[2] ;
-  struct Video *result = 0 ;
-  
-  if (!SWIG_Python_UnpackTuple(args, "videos_get", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Videos, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "videos_get" "', argument " "1"" of type '" "struct Videos *""'"); 
-  }
-  arg1 = (struct Videos *)(argp1);
-  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "videos_get" "', argument " "2"" of type '" "int""'");
-  } 
-  arg2 = (int)(val2);
-  result = (struct Video *)videos_get(arg1,arg2);
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_Video, 0 |  0 );
+  arg1 = (Config_t *)(argp1);
+  result = (List_t *)config_get_vids_list(arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_List_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -4223,7 +4327,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_config_get_vids(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  struct Config *arg1 = (struct Config *) 0 ;
+  Config_t *arg1 = (Config_t *) 0 ;
   vid_cb arg2 = (vid_cb) 0 ;
   void *arg3 = (void *) 0 ;
   void *argp1 = 0 ;
@@ -4235,9 +4339,9 @@ SWIGINTERN PyObject *_wrap_config_get_vids(PyObject *SWIGUNUSEDPARM(self), PyObj
   if (!SWIG_Python_UnpackTuple(args, "config_get_vids", 3, 3, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "config_get_vids" "', argument " "1"" of type '" "struct Config *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "config_get_vids" "', argument " "1"" of type '" "Config_t *""'"); 
   }
-  arg1 = (struct Config *)(argp1);
+  arg1 = (Config_t *)(argp1);
   {
     int res = SWIG_ConvertFunctionPtr(swig_obj[1], (void**)(&arg2), SWIGTYPE_p_f_p_struct_Video_p_void__void);
     if (!SWIG_IsOK(res)) {
@@ -4256,9 +4360,39 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_video_get_playable(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Video_t *arg1 = (Video_t *) 0 ;
+  Config_t *arg2 = (Config_t *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  char *result = 0 ;
+  
+  if (!SWIG_Python_UnpackTuple(args, "video_get_playable", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Video, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "video_get_playable" "', argument " "1"" of type '" "Video_t *""'"); 
+  }
+  arg1 = (Video_t *)(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_Config, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "video_get_playable" "', argument " "2"" of type '" "Config_t *""'"); 
+  }
+  arg2 = (Config_t *)(argp2);
+  result = (char *)video_get_playable(arg1,arg2);
+  resultobj = SWIG_FromCharPtr((const char *)result);
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_config_free(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  struct Config *arg1 = (struct Config *) 0 ;
+  Config_t *arg1 = (Config_t *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -4267,9 +4401,9 @@ SWIGINTERN PyObject *_wrap_config_free(PyObject *SWIGUNUSEDPARM(self), PyObject 
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "config_free" "', argument " "1"" of type '" "struct Config *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "config_free" "', argument " "1"" of type '" "Config_t *""'"); 
   }
-  arg1 = (struct Config *)(argp1);
+  arg1 = (Config_t *)(argp1);
   config_free(arg1);
   resultobj = SWIG_Py_Void();
   return resultobj;
@@ -4278,7 +4412,101 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Video_id_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_config_video_search(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Config_t *arg1 = (Config_t *) 0 ;
+  char *arg2 = (char *) 0 ;
+  int arg3 ;
+  vid_cb arg4 = (vid_cb) 0 ;
+  void *arg5 = (void *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 ;
+  char *buf2 = 0 ;
+  int alloc2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  int res5 ;
+  PyObject *swig_obj[5] ;
+  
+  if (!SWIG_Python_UnpackTuple(args, "config_video_search", 5, 5, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "config_video_search" "', argument " "1"" of type '" "Config_t *""'"); 
+  }
+  arg1 = (Config_t *)(argp1);
+  res2 = SWIG_AsCharPtrAndSize(swig_obj[1], &buf2, NULL, &alloc2);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "config_video_search" "', argument " "2"" of type '" "char const *""'");
+  }
+  arg2 = (char *)(buf2);
+  ecode3 = SWIG_AsVal_int(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "config_video_search" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = (int)(val3);
+  {
+    int res = SWIG_ConvertFunctionPtr(swig_obj[3], (void**)(&arg4), SWIGTYPE_p_f_p_struct_Video_p_void__void);
+    if (!SWIG_IsOK(res)) {
+      SWIG_exception_fail(SWIG_ArgError(res), "in method '" "config_video_search" "', argument " "4"" of type '" "vid_cb""'"); 
+    }
+  }
+  res5 = SWIG_ConvertPtr(swig_obj[4],SWIG_as_voidptrptr(&arg5), 0, 0);
+  if (!SWIG_IsOK(res5)) {
+    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "config_video_search" "', argument " "5"" of type '" "void *""'"); 
+  }
+  config_video_search(arg1,(char const *)arg2,arg3,arg4,arg5);
+  resultobj = SWIG_Py_Void();
+  if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+  return resultobj;
+fail:
+  if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_config_video_search_list(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Config_t *arg1 = (Config_t *) 0 ;
+  char *arg2 = (char *) 0 ;
+  int arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 ;
+  char *buf2 = 0 ;
+  int alloc2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  PyObject *swig_obj[3] ;
+  List_t *result = 0 ;
+  
+  if (!SWIG_Python_UnpackTuple(args, "config_video_search_list", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Config, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "config_video_search_list" "', argument " "1"" of type '" "Config_t *""'"); 
+  }
+  arg1 = (Config_t *)(argp1);
+  res2 = SWIG_AsCharPtrAndSize(swig_obj[1], &buf2, NULL, &alloc2);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "config_video_search_list" "', argument " "2"" of type '" "char const *""'");
+  }
+  arg2 = (char *)(buf2);
+  ecode3 = SWIG_AsVal_int(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "config_video_search_list" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = (int)(val3);
+  result = (List_t *)config_video_search_list(arg1,(char const *)arg2,arg3);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_List_t, 0 |  0 );
+  if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+  return resultobj;
+fail:
+  if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Video_t_id_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Video *arg1 = (struct Video *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -4289,15 +4517,15 @@ SWIGINTERN PyObject *_wrap_Video_id_set(PyObject *SWIGUNUSEDPARM(self), PyObject
   int alloc2 = 0 ;
   PyObject *swig_obj[2] ;
   
-  if (!SWIG_Python_UnpackTuple(args, "Video_id_set", 2, 2, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "Video_t_id_set", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Video, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Video_id_set" "', argument " "1"" of type '" "struct Video *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Video_t_id_set" "', argument " "1"" of type '" "struct Video *""'"); 
   }
   arg1 = (struct Video *)(argp1);
   res2 = SWIG_AsCharPtrAndSize(swig_obj[1], &buf2, NULL, &alloc2);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Video_id_set" "', argument " "2"" of type '" "char *""'");
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Video_t_id_set" "', argument " "2"" of type '" "char *""'");
   }
   arg2 = (char *)(buf2);
   if (arg1->id) free((char*)arg1->id);
@@ -4316,7 +4544,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Video_id_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Video_t_id_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Video *arg1 = (struct Video *) 0 ;
   void *argp1 = 0 ;
@@ -4328,7 +4556,7 @@ SWIGINTERN PyObject *_wrap_Video_id_get(PyObject *SWIGUNUSEDPARM(self), PyObject
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Video, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Video_id_get" "', argument " "1"" of type '" "struct Video *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Video_t_id_get" "', argument " "1"" of type '" "struct Video *""'"); 
   }
   arg1 = (struct Video *)(argp1);
   result = (char *) ((arg1)->id);
@@ -4339,7 +4567,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Video_title_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Video_t_title_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Video *arg1 = (struct Video *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -4350,15 +4578,15 @@ SWIGINTERN PyObject *_wrap_Video_title_set(PyObject *SWIGUNUSEDPARM(self), PyObj
   int alloc2 = 0 ;
   PyObject *swig_obj[2] ;
   
-  if (!SWIG_Python_UnpackTuple(args, "Video_title_set", 2, 2, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "Video_t_title_set", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Video, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Video_title_set" "', argument " "1"" of type '" "struct Video *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Video_t_title_set" "', argument " "1"" of type '" "struct Video *""'"); 
   }
   arg1 = (struct Video *)(argp1);
   res2 = SWIG_AsCharPtrAndSize(swig_obj[1], &buf2, NULL, &alloc2);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Video_title_set" "', argument " "2"" of type '" "char *""'");
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Video_t_title_set" "', argument " "2"" of type '" "char *""'");
   }
   arg2 = (char *)(buf2);
   if (arg1->title) free((char*)arg1->title);
@@ -4377,7 +4605,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Video_title_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Video_t_title_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Video *arg1 = (struct Video *) 0 ;
   void *argp1 = 0 ;
@@ -4389,7 +4617,7 @@ SWIGINTERN PyObject *_wrap_Video_title_get(PyObject *SWIGUNUSEDPARM(self), PyObj
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Video, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Video_title_get" "', argument " "1"" of type '" "struct Video *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Video_t_title_get" "', argument " "1"" of type '" "struct Video *""'"); 
   }
   arg1 = (struct Video *)(argp1);
   result = (char *) ((arg1)->title);
@@ -4400,7 +4628,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Video_channel_name_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Video_t_channel_name_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Video *arg1 = (struct Video *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -4411,15 +4639,15 @@ SWIGINTERN PyObject *_wrap_Video_channel_name_set(PyObject *SWIGUNUSEDPARM(self)
   int alloc2 = 0 ;
   PyObject *swig_obj[2] ;
   
-  if (!SWIG_Python_UnpackTuple(args, "Video_channel_name_set", 2, 2, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "Video_t_channel_name_set", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Video, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Video_channel_name_set" "', argument " "1"" of type '" "struct Video *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Video_t_channel_name_set" "', argument " "1"" of type '" "struct Video *""'"); 
   }
   arg1 = (struct Video *)(argp1);
   res2 = SWIG_AsCharPtrAndSize(swig_obj[1], &buf2, NULL, &alloc2);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Video_channel_name_set" "', argument " "2"" of type '" "char *""'");
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Video_t_channel_name_set" "', argument " "2"" of type '" "char *""'");
   }
   arg2 = (char *)(buf2);
   if (arg1->channel_name) free((char*)arg1->channel_name);
@@ -4438,7 +4666,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Video_channel_name_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Video_t_channel_name_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Video *arg1 = (struct Video *) 0 ;
   void *argp1 = 0 ;
@@ -4450,7 +4678,7 @@ SWIGINTERN PyObject *_wrap_Video_channel_name_get(PyObject *SWIGUNUSEDPARM(self)
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Video, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Video_channel_name_get" "', argument " "1"" of type '" "struct Video *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Video_t_channel_name_get" "', argument " "1"" of type '" "struct Video *""'"); 
   }
   arg1 = (struct Video *)(argp1);
   result = (char *) ((arg1)->channel_name);
@@ -4461,7 +4689,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Video_channel_id_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Video_t_channel_id_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Video *arg1 = (struct Video *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -4472,15 +4700,15 @@ SWIGINTERN PyObject *_wrap_Video_channel_id_set(PyObject *SWIGUNUSEDPARM(self), 
   int alloc2 = 0 ;
   PyObject *swig_obj[2] ;
   
-  if (!SWIG_Python_UnpackTuple(args, "Video_channel_id_set", 2, 2, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "Video_t_channel_id_set", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Video, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Video_channel_id_set" "', argument " "1"" of type '" "struct Video *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Video_t_channel_id_set" "', argument " "1"" of type '" "struct Video *""'"); 
   }
   arg1 = (struct Video *)(argp1);
   res2 = SWIG_AsCharPtrAndSize(swig_obj[1], &buf2, NULL, &alloc2);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Video_channel_id_set" "', argument " "2"" of type '" "char *""'");
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Video_t_channel_id_set" "', argument " "2"" of type '" "char *""'");
   }
   arg2 = (char *)(buf2);
   if (arg1->channel_id) free((char*)arg1->channel_id);
@@ -4499,7 +4727,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Video_channel_id_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Video_t_channel_id_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Video *arg1 = (struct Video *) 0 ;
   void *argp1 = 0 ;
@@ -4511,7 +4739,7 @@ SWIGINTERN PyObject *_wrap_Video_channel_id_get(PyObject *SWIGUNUSEDPARM(self), 
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Video, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Video_channel_id_get" "', argument " "1"" of type '" "struct Video *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Video_t_channel_id_get" "', argument " "1"" of type '" "struct Video *""'"); 
   }
   arg1 = (struct Video *)(argp1);
   result = (char *) ((arg1)->channel_id);
@@ -4522,27 +4750,88 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Video_published_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Video_t_thumbnail_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Video *arg1 = (struct Video *) 0 ;
-  size_t arg2 ;
+  char *arg2 = (char *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  size_t val2 ;
+  int res2 ;
+  char *buf2 = 0 ;
+  int alloc2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  if (!SWIG_Python_UnpackTuple(args, "Video_t_thumbnail_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Video, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Video_t_thumbnail_set" "', argument " "1"" of type '" "struct Video *""'"); 
+  }
+  arg1 = (struct Video *)(argp1);
+  res2 = SWIG_AsCharPtrAndSize(swig_obj[1], &buf2, NULL, &alloc2);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Video_t_thumbnail_set" "', argument " "2"" of type '" "char *""'");
+  }
+  arg2 = (char *)(buf2);
+  if (arg1->thumbnail) free((char*)arg1->thumbnail);
+  if (arg2) {
+    size_t size = strlen((const char *)(arg2)) + 1;
+    arg1->thumbnail = (char *)(char *)memcpy(malloc((size)*sizeof(char)), (const char *)(arg2), sizeof(char)*(size));
+  } else {
+    arg1->thumbnail = 0;
+  }
+  resultobj = SWIG_Py_Void();
+  if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+  return resultobj;
+fail:
+  if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Video_t_thumbnail_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  struct Video *arg1 = (struct Video *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  char *result = 0 ;
+  
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Video, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Video_t_thumbnail_get" "', argument " "1"" of type '" "struct Video *""'"); 
+  }
+  arg1 = (struct Video *)(argp1);
+  result = (char *) ((arg1)->thumbnail);
+  resultobj = SWIG_FromCharPtr((const char *)result);
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Video_t_published_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  struct Video *arg1 = (struct Video *) 0 ;
+  long arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  long val2 ;
   int ecode2 = 0 ;
   PyObject *swig_obj[2] ;
   
-  if (!SWIG_Python_UnpackTuple(args, "Video_published_set", 2, 2, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "Video_t_published_set", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Video, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Video_published_set" "', argument " "1"" of type '" "struct Video *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Video_t_published_set" "', argument " "1"" of type '" "struct Video *""'"); 
   }
   arg1 = (struct Video *)(argp1);
-  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  ecode2 = SWIG_AsVal_long(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Video_published_set" "', argument " "2"" of type '" "size_t""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Video_t_published_set" "', argument " "2"" of type '" "long""'");
   } 
-  arg2 = (size_t)(val2);
+  arg2 = (long)(val2);
   if (arg1) (arg1)->published = arg2;
   resultobj = SWIG_Py_Void();
   return resultobj;
@@ -4551,34 +4840,34 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Video_published_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Video_t_published_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Video *arg1 = (struct Video *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  size_t result;
+  long result;
   
   if (!args) SWIG_fail;
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Video, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Video_published_get" "', argument " "1"" of type '" "struct Video *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Video_t_published_get" "', argument " "1"" of type '" "struct Video *""'"); 
   }
   arg1 = (struct Video *)(argp1);
-  result =  ((arg1)->published);
-  resultobj = SWIG_From_size_t((size_t)(result));
+  result = (long) ((arg1)->published);
+  resultobj = SWIG_From_long((long)(result));
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_new_Video(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_new_Video_t(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Video *result = 0 ;
   
-  if (!SWIG_Python_UnpackTuple(args, "new_Video", 0, 0, 0)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "new_Video_t", 0, 0, 0)) SWIG_fail;
   result = (struct Video *)calloc(1, sizeof(struct Video));
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_Video, SWIG_POINTER_NEW |  0 );
   return resultobj;
@@ -4587,7 +4876,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_delete_Video(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_delete_Video_t(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   struct Video *arg1 = (struct Video *) 0 ;
   void *argp1 = 0 ;
@@ -4598,7 +4887,7 @@ SWIGINTERN PyObject *_wrap_delete_Video(PyObject *SWIGUNUSEDPARM(self), PyObject
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Video, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Video" "', argument " "1"" of type '" "struct Video *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Video_t" "', argument " "1"" of type '" "struct Video *""'"); 
   }
   arg1 = (struct Video *)(argp1);
   free((char *) arg1);
@@ -4609,23 +4898,23 @@ fail:
 }
 
 
-SWIGINTERN PyObject *Video_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *Video_t_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *obj;
   if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
   SWIG_TypeNewClientData(SWIGTYPE_p_Video, SWIG_NewClientData(obj));
   return SWIG_Py_Void();
 }
 
-SWIGINTERN PyObject *Video_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *Video_t_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   return SWIG_Python_InitShadowInstance(args);
 }
 
 SWIGINTERN PyObject *_wrap_video_new(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  struct Video *result = 0 ;
+  Video_t *result = 0 ;
   
   if (!SWIG_Python_UnpackTuple(args, "video_new", 0, 0, 0)) SWIG_fail;
-  result = (struct Video *)video_new();
+  result = (Video_t *)video_new();
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_Video, 0 |  0 );
   return resultobj;
 fail:
@@ -4635,7 +4924,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_video_free(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  struct Video *arg1 = (struct Video *) 0 ;
+  Video_t *arg1 = (Video_t *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -4644,9 +4933,9 @@ SWIGINTERN PyObject *_wrap_video_free(PyObject *SWIGUNUSEDPARM(self), PyObject *
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Video, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "video_free" "', argument " "1"" of type '" "struct Video *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "video_free" "', argument " "1"" of type '" "Video_t *""'"); 
   }
-  arg1 = (struct Video *)(argp1);
+  arg1 = (Video_t *)(argp1);
   video_free(arg1);
   resultobj = SWIG_Py_Void();
   return resultobj;
@@ -4655,30 +4944,65 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_video_get_playable(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_net_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  struct Video *arg1 = (struct Video *) 0 ;
-  struct Config *arg2 = (struct Config *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  PyObject *swig_obj[2] ;
+  char *arg1 = (char *) 0 ;
+  int arg2 ;
+  char *arg3 = (char *) 0 ;
+  int res1 ;
+  char *buf1 = 0 ;
+  int alloc1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  int res3 ;
+  char *buf3 = 0 ;
+  int alloc3 = 0 ;
+  PyObject *swig_obj[3] ;
   char *result = 0 ;
   
-  if (!SWIG_Python_UnpackTuple(args, "video_get_playable", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_Video, 0 |  0 );
+  if (!SWIG_Python_UnpackTuple(args, "net_get", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_AsCharPtrAndSize(swig_obj[0], &buf1, NULL, &alloc1);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "video_get_playable" "', argument " "1"" of type '" "struct Video *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "net_get" "', argument " "1"" of type '" "char const *""'");
   }
-  arg1 = (struct Video *)(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_Config, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "video_get_playable" "', argument " "2"" of type '" "struct Config *""'"); 
+  arg1 = (char *)(buf1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "net_get" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = (int)(val2);
+  res3 = SWIG_AsCharPtrAndSize(swig_obj[2], &buf3, NULL, &alloc3);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "net_get" "', argument " "3"" of type '" "char const *""'");
   }
-  arg2 = (struct Config *)(argp2);
-  result = (char *)video_get_playable(arg1,arg2);
+  arg3 = (char *)(buf3);
+  result = (char *)net_get((char const *)arg1,arg2,(char const *)arg3);
   resultobj = SWIG_FromCharPtr((const char *)result);
+  if (alloc1 == SWIG_NEWOBJ) free((char*)buf1);
+  if (alloc3 == SWIG_NEWOBJ) free((char*)buf3);
+  return resultobj;
+fail:
+  if (alloc1 == SWIG_NEWOBJ) free((char*)buf1);
+  if (alloc3 == SWIG_NEWOBJ) free((char*)buf3);
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_net_set_req_func(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  req_func_t arg1 = (req_func_t) 0 ;
+  PyObject *swig_obj[1] ;
+  
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  {
+    int res = SWIG_ConvertFunctionPtr(swig_obj[0], (void**)(&arg1), SWIGTYPE_p_f_p_q_const__char__p_char);
+    if (!SWIG_IsOK(res)) {
+      SWIG_exception_fail(SWIG_ArgError(res), "in method '" "net_set_req_func" "', argument " "1"" of type '" "req_func_t""'"); 
+    }
+  }
+  net_set_req_func((char const *(*)(char const *))arg1);
+  resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
   return NULL;
@@ -4687,72 +5011,83 @@ fail:
 
 static PyMethodDef SwigMethods[] = {
 	 { "SWIG_PyInstanceMethod_New", SWIG_PyInstanceMethod_New, METH_O, NULL},
-	 { "Channel_id_set", _wrap_Channel_id_set, METH_VARARGS, NULL},
-	 { "Channel_id_get", _wrap_Channel_id_get, METH_O, NULL},
-	 { "Channel_name_set", _wrap_Channel_name_set, METH_VARARGS, NULL},
-	 { "Channel_name_get", _wrap_Channel_name_get, METH_O, NULL},
-	 { "new_Channel", _wrap_new_Channel, METH_NOARGS, NULL},
-	 { "delete_Channel", _wrap_delete_Channel, METH_O, NULL},
-	 { "Channel_swigregister", Channel_swigregister, METH_O, NULL},
-	 { "Channel_swiginit", Channel_swiginit, METH_VARARGS, NULL},
+	 { "Channel_t_id_set", _wrap_Channel_t_id_set, METH_VARARGS, NULL},
+	 { "Channel_t_id_get", _wrap_Channel_t_id_get, METH_O, NULL},
+	 { "Channel_t_name_set", _wrap_Channel_t_name_set, METH_VARARGS, NULL},
+	 { "Channel_t_name_get", _wrap_Channel_t_name_get, METH_O, NULL},
+	 { "Channel_t_sub_count_set", _wrap_Channel_t_sub_count_set, METH_VARARGS, NULL},
+	 { "Channel_t_sub_count_get", _wrap_Channel_t_sub_count_get, METH_O, NULL},
+	 { "Channel_t_video_count_set", _wrap_Channel_t_video_count_set, METH_VARARGS, NULL},
+	 { "Channel_t_video_count_get", _wrap_Channel_t_video_count_get, METH_O, NULL},
+	 { "new_Channel_t", _wrap_new_Channel_t, METH_NOARGS, NULL},
+	 { "delete_Channel_t", _wrap_delete_Channel_t, METH_O, NULL},
+	 { "Channel_t_swigregister", Channel_t_swigregister, METH_O, NULL},
+	 { "Channel_t_swiginit", Channel_t_swiginit, METH_VARARGS, NULL},
+	 { "Channels_t_arry_set", _wrap_Channels_t_arry_set, METH_VARARGS, NULL},
+	 { "Channels_t_arry_get", _wrap_Channels_t_arry_get, METH_O, NULL},
+	 { "Channels_t_length_set", _wrap_Channels_t_length_set, METH_VARARGS, NULL},
+	 { "Channels_t_length_get", _wrap_Channels_t_length_get, METH_O, NULL},
+	 { "new_Channels_t", _wrap_new_Channels_t, METH_NOARGS, NULL},
+	 { "delete_Channels_t", _wrap_delete_Channels_t, METH_O, NULL},
+	 { "Channels_t_swigregister", Channels_t_swigregister, METH_O, NULL},
+	 { "Channels_t_swiginit", Channels_t_swiginit, METH_VARARGS, NULL},
 	 { "channel_new", _wrap_channel_new, METH_O, NULL},
+	 { "vid_get_thumbnail", _wrap_vid_get_thumbnail, METH_O, NULL},
+	 { "channel_new_from_name", _wrap_channel_new_from_name, METH_VARARGS, NULL},
+	 { "channel_search", _wrap_channel_search, METH_VARARGS, NULL},
+	 { "channel_search_list", _wrap_channel_search_list, METH_VARARGS, NULL},
 	 { "channel_name", _wrap_channel_name, METH_VARARGS, NULL},
 	 { "channel_get_vids", _wrap_channel_get_vids, METH_VARARGS, NULL},
+	 { "channel_get_vids_list", _wrap_channel_get_vids_list, METH_VARARGS, NULL},
 	 { "channel_free", _wrap_channel_free, METH_O, NULL},
-	 { "Subs_array_set", _wrap_Subs_array_set, METH_VARARGS, NULL},
-	 { "Subs_array_get", _wrap_Subs_array_get, METH_O, NULL},
-	 { "Subs_length_set", _wrap_Subs_length_set, METH_VARARGS, NULL},
-	 { "Subs_length_get", _wrap_Subs_length_get, METH_O, NULL},
-	 { "new_Subs", _wrap_new_Subs, METH_NOARGS, NULL},
-	 { "delete_Subs", _wrap_delete_Subs, METH_O, NULL},
-	 { "Subs_swigregister", Subs_swigregister, METH_O, NULL},
-	 { "Subs_swiginit", Subs_swiginit, METH_VARARGS, NULL},
-	 { "Config_file_set", _wrap_Config_file_set, METH_VARARGS, NULL},
-	 { "Config_file_get", _wrap_Config_file_get, METH_O, NULL},
-	 { "Config_quality_set", _wrap_Config_quality_set, METH_VARARGS, NULL},
-	 { "Config_quality_get", _wrap_Config_quality_get, METH_O, NULL},
-	 { "Config_subs_set", _wrap_Config_subs_set, METH_VARARGS, NULL},
-	 { "Config_subs_get", _wrap_Config_subs_get, METH_O, NULL},
-	 { "Config_invidious_inst_set", _wrap_Config_invidious_inst_set, METH_VARARGS, NULL},
-	 { "Config_invidious_inst_get", _wrap_Config_invidious_inst_get, METH_O, NULL},
-	 { "Config_use_threading_set", _wrap_Config_use_threading_set, METH_VARARGS, NULL},
-	 { "Config_use_threading_get", _wrap_Config_use_threading_get, METH_O, NULL},
-	 { "new_Config", _wrap_new_Config, METH_NOARGS, NULL},
-	 { "delete_Config", _wrap_delete_Config, METH_O, NULL},
-	 { "Config_swigregister", Config_swigregister, METH_O, NULL},
-	 { "Config_swiginit", Config_swiginit, METH_VARARGS, NULL},
-	 { "Videos_array_set", _wrap_Videos_array_set, METH_VARARGS, NULL},
-	 { "Videos_array_get", _wrap_Videos_array_get, METH_O, NULL},
-	 { "Videos_length_set", _wrap_Videos_length_set, METH_VARARGS, NULL},
-	 { "Videos_length_get", _wrap_Videos_length_get, METH_O, NULL},
-	 { "new_Videos", _wrap_new_Videos, METH_NOARGS, NULL},
-	 { "delete_Videos", _wrap_delete_Videos, METH_O, NULL},
-	 { "Videos_swigregister", Videos_swigregister, METH_O, NULL},
-	 { "Videos_swiginit", Videos_swiginit, METH_VARARGS, NULL},
-	 { "config_new", _wrap_config_new, METH_O, NULL},
+	 { "Config_t_fname_set", _wrap_Config_t_fname_set, METH_VARARGS, NULL},
+	 { "Config_t_fname_get", _wrap_Config_t_fname_get, METH_O, NULL},
+	 { "Config_t_quality_set", _wrap_Config_t_quality_set, METH_VARARGS, NULL},
+	 { "Config_t_quality_get", _wrap_Config_t_quality_get, METH_O, NULL},
+	 { "Config_t_subs_set", _wrap_Config_t_subs_set, METH_VARARGS, NULL},
+	 { "Config_t_subs_get", _wrap_Config_t_subs_get, METH_O, NULL},
+	 { "Config_t_invidious_inst_set", _wrap_Config_t_invidious_inst_set, METH_VARARGS, NULL},
+	 { "Config_t_invidious_inst_get", _wrap_Config_t_invidious_inst_get, METH_O, NULL},
+	 { "Config_t_use_threading_set", _wrap_Config_t_use_threading_set, METH_VARARGS, NULL},
+	 { "Config_t_use_threading_get", _wrap_Config_t_use_threading_get, METH_O, NULL},
+	 { "Config_t_use_proxy_set", _wrap_Config_t_use_proxy_set, METH_VARARGS, NULL},
+	 { "Config_t_use_proxy_get", _wrap_Config_t_use_proxy_get, METH_O, NULL},
+	 { "Config_t_proxy_url_set", _wrap_Config_t_proxy_url_set, METH_VARARGS, NULL},
+	 { "Config_t_proxy_url_get", _wrap_Config_t_proxy_url_get, METH_O, NULL},
+	 { "new_Config_t", _wrap_new_Config_t, METH_NOARGS, NULL},
+	 { "delete_Config_t", _wrap_delete_Config_t, METH_O, NULL},
+	 { "Config_t_swigregister", Config_t_swigregister, METH_O, NULL},
+	 { "Config_t_swiginit", Config_t_swiginit, METH_VARARGS, NULL},
+	 { "config_new", _wrap_config_new, METH_VARARGS, NULL},
 	 { "config_subs_add", _wrap_config_subs_add, METH_VARARGS, NULL},
+	 { "config_subs_rm", _wrap_config_subs_rm, METH_VARARGS, NULL},
+	 { "config_save", _wrap_config_save, METH_O, NULL},
 	 { "config_get_vids_list", _wrap_config_get_vids_list, METH_O, NULL},
-	 { "videos_free", _wrap_videos_free, METH_O, NULL},
-	 { "videos_get", _wrap_videos_get, METH_VARARGS, NULL},
 	 { "config_get_vids", _wrap_config_get_vids, METH_VARARGS, NULL},
+	 { "video_get_playable", _wrap_video_get_playable, METH_VARARGS, NULL},
 	 { "config_free", _wrap_config_free, METH_O, NULL},
-	 { "Video_id_set", _wrap_Video_id_set, METH_VARARGS, NULL},
-	 { "Video_id_get", _wrap_Video_id_get, METH_O, NULL},
-	 { "Video_title_set", _wrap_Video_title_set, METH_VARARGS, NULL},
-	 { "Video_title_get", _wrap_Video_title_get, METH_O, NULL},
-	 { "Video_channel_name_set", _wrap_Video_channel_name_set, METH_VARARGS, NULL},
-	 { "Video_channel_name_get", _wrap_Video_channel_name_get, METH_O, NULL},
-	 { "Video_channel_id_set", _wrap_Video_channel_id_set, METH_VARARGS, NULL},
-	 { "Video_channel_id_get", _wrap_Video_channel_id_get, METH_O, NULL},
-	 { "Video_published_set", _wrap_Video_published_set, METH_VARARGS, NULL},
-	 { "Video_published_get", _wrap_Video_published_get, METH_O, NULL},
-	 { "new_Video", _wrap_new_Video, METH_NOARGS, NULL},
-	 { "delete_Video", _wrap_delete_Video, METH_O, NULL},
-	 { "Video_swigregister", Video_swigregister, METH_O, NULL},
-	 { "Video_swiginit", Video_swiginit, METH_VARARGS, NULL},
+	 { "config_video_search", _wrap_config_video_search, METH_VARARGS, NULL},
+	 { "config_video_search_list", _wrap_config_video_search_list, METH_VARARGS, NULL},
+	 { "Video_t_id_set", _wrap_Video_t_id_set, METH_VARARGS, NULL},
+	 { "Video_t_id_get", _wrap_Video_t_id_get, METH_O, NULL},
+	 { "Video_t_title_set", _wrap_Video_t_title_set, METH_VARARGS, NULL},
+	 { "Video_t_title_get", _wrap_Video_t_title_get, METH_O, NULL},
+	 { "Video_t_channel_name_set", _wrap_Video_t_channel_name_set, METH_VARARGS, NULL},
+	 { "Video_t_channel_name_get", _wrap_Video_t_channel_name_get, METH_O, NULL},
+	 { "Video_t_channel_id_set", _wrap_Video_t_channel_id_set, METH_VARARGS, NULL},
+	 { "Video_t_channel_id_get", _wrap_Video_t_channel_id_get, METH_O, NULL},
+	 { "Video_t_thumbnail_set", _wrap_Video_t_thumbnail_set, METH_VARARGS, NULL},
+	 { "Video_t_thumbnail_get", _wrap_Video_t_thumbnail_get, METH_O, NULL},
+	 { "Video_t_published_set", _wrap_Video_t_published_set, METH_VARARGS, NULL},
+	 { "Video_t_published_get", _wrap_Video_t_published_get, METH_O, NULL},
+	 { "new_Video_t", _wrap_new_Video_t, METH_NOARGS, NULL},
+	 { "delete_Video_t", _wrap_delete_Video_t, METH_O, NULL},
+	 { "Video_t_swigregister", Video_t_swigregister, METH_O, NULL},
+	 { "Video_t_swiginit", Video_t_swiginit, METH_VARARGS, NULL},
 	 { "video_new", _wrap_video_new, METH_NOARGS, NULL},
 	 { "video_free", _wrap_video_free, METH_O, NULL},
-	 { "video_get_playable", _wrap_video_get_playable, METH_VARARGS, NULL},
+	 { "net_get", _wrap_net_get, METH_VARARGS, NULL},
+	 { "net_set_req_func", _wrap_net_set_req_func, METH_O, NULL},
 	 { NULL, NULL, 0, NULL }
 };
 
@@ -4763,48 +5098,56 @@ static PyMethodDef SwigMethods_proxydocs[] = {
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
-static swig_type_info _swigt__p_Channel = {"_p_Channel", "struct Channel *|Channel *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_Config = {"_p_Config", "struct Config *|Config *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_Subs = {"_p_Subs", "struct Subs *|Subs *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_Video = {"_p_Video", "struct Video *|Video *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_Videos = {"_p_Videos", "struct Videos *|Videos *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_Channel = {"_p_Channel", "Channel_t *|struct Channel *|Channel *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_Channels = {"_p_Channels", "Channels_t *|struct Channels *|Channels *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_Config = {"_p_Config", "struct Config *|Config *|Config_t *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_List = {"_p_List", "struct List *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_List_t = {"_p_List_t", "List_t *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_Video = {"_p_Video", "Video_t *|struct Video *|Video *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_f_p_q_const__char__p_char = {"_p_f_p_q_const__char__p_char", "char *(*)(char const *)|req_func_t", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_f_p_struct_Channel_p_void__void = {"_p_f_p_struct_Channel_p_void__void", "channel_cb|void (*)(struct Channel *,void *)", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_f_p_struct_Video_p_void__void = {"_p_f_p_struct_Video_p_void__void", "vid_cb|void (*)(struct Video *,void *)", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_p_Channel = {"_p_p_Channel", "struct Channel **", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_p_Video = {"_p_p_Video", "struct Video **", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_p_Channel = {"_p_p_Channel", "struct Channel **|Channel_t **", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
   &_swigt__p_Channel,
+  &_swigt__p_Channels,
   &_swigt__p_Config,
-  &_swigt__p_Subs,
+  &_swigt__p_List,
+  &_swigt__p_List_t,
   &_swigt__p_Video,
-  &_swigt__p_Videos,
   &_swigt__p_char,
+  &_swigt__p_f_p_q_const__char__p_char,
+  &_swigt__p_f_p_struct_Channel_p_void__void,
   &_swigt__p_f_p_struct_Video_p_void__void,
   &_swigt__p_p_Channel,
-  &_swigt__p_p_Video,
 };
 
 static swig_cast_info _swigc__p_Channel[] = {  {&_swigt__p_Channel, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_Channels[] = {  {&_swigt__p_Channels, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Config[] = {  {&_swigt__p_Config, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_Subs[] = {  {&_swigt__p_Subs, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_List[] = {  {&_swigt__p_List, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_List_t[] = {  {&_swigt__p_List_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Video[] = {  {&_swigt__p_Video, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_Videos[] = {  {&_swigt__p_Videos, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_f_p_q_const__char__p_char[] = {  {&_swigt__p_f_p_q_const__char__p_char, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_f_p_struct_Channel_p_void__void[] = {  {&_swigt__p_f_p_struct_Channel_p_void__void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_f_p_struct_Video_p_void__void[] = {  {&_swigt__p_f_p_struct_Video_p_void__void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_p_Channel[] = {  {&_swigt__p_p_Channel, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_p_Video[] = {  {&_swigt__p_p_Video, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_Channel,
+  _swigc__p_Channels,
   _swigc__p_Config,
-  _swigc__p_Subs,
+  _swigc__p_List,
+  _swigc__p_List_t,
   _swigc__p_Video,
-  _swigc__p_Videos,
   _swigc__p_char,
+  _swigc__p_f_p_q_const__char__p_char,
+  _swigc__p_f_p_struct_Channel_p_void__void,
   _swigc__p_f_p_struct_Video_p_void__void,
   _swigc__p_p_Channel,
-  _swigc__p_p_Video,
 };
 
 

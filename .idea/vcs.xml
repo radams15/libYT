@@ -3,7 +3,5 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/lib/cJSON" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/lib/librequest" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/lib/librequest/lib/b64.c" vcs="Git" />
   </component>
 </project>
